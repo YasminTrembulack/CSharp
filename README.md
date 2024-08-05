@@ -13,6 +13,7 @@ dotnet run
 
 # Aula 01
 
+```
 // falo que estou usando esse pacote 
 using MeuPacote;
 
@@ -25,11 +26,11 @@ Console.WriteLine("Hello, World!");
 Console.BackgroundColor = ConsoleColor.Blue; // Alterar a cor do terminal
 // Console.Beep(200, 200); // Barulho 
 
+
 var tupla = (1, 2);
 tupla.Item1 = 2;
 
 public record A(string Nome);
-
 
 public struct DateTimeA
 {
@@ -40,11 +41,8 @@ public struct DateTimeA
     }
 }
 
-
 Pessoa pessoa = new Pessoa("yasmin");
-
 pessoa.Nome += "aaaa";
-
 
 public class Pessoa
 {
@@ -57,7 +55,6 @@ public class Pessoa
     public override string ToString()
         => Nome;
 }
-
 
 var listt = new List();
 var value = listt[1];
@@ -74,7 +71,6 @@ public class List
 
 MyClass<int> obj = new MyClass<int>();
 int val = obj.First;
-
 
 public class MyClass<T>()
     // where T: class
@@ -95,3 +91,4 @@ listint.Add(2);
 listint.Add(3);
 var data = array[2..3];
 var ultimo = array[^1];
+```
