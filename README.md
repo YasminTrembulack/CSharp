@@ -13,6 +13,7 @@ dotnet run
 
 # Aula 01
 
+```
 // falo que estou usando esse pacote 
 using MeuPacote;
 
@@ -90,3 +91,4 @@ listint.Add(2);
 listint.Add(3);
 var data = array[2..3];
 var ultimo = array[^1];
+```
