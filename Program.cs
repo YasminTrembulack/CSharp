@@ -120,7 +120,13 @@ BigInt[] Sort(BigInt[] array)
     {
         rightSide = Sort(rightSide);
     }
-    
+    // Console.WriteLine("----------------------");
+
+    // BigInt[] a = [..leftSide, ..rightSide];
+    // foreach (var item in a)
+    // {
+    //     Console.WriteLine(item);
+    // }
 
     return Order([..leftSide, ..rightSide]);
 }

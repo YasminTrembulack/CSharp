@@ -1,3 +1,6 @@
+
+// ./INFLUD21-01-05-2023.csv 
+
 // int dictColumn(string line , string col){
 //     var formatted_line = line.Replace("\"", "");
 //     string[] array_line = formatted_line.Split(";");
