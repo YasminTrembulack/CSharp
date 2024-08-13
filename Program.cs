@@ -215,7 +215,7 @@ public static class Enumerable
     )
     {   
         ArgumentNullException.ThrowIfNull(collection, nameof(collection));
-        
+
         foreach (var item in collection)
         {
             if(!predicate(item))
@@ -229,7 +229,7 @@ public static class Enumerable
     )
     {   
         ArgumentNullException.ThrowIfNull(collection, nameof(collection));
-        
+
         var canReturn = false;
         foreach (var item in collection){
             if(!predicate(item))
