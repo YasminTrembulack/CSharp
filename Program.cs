@@ -82,7 +82,7 @@ BigInt num19 = new(array19);
 BigInt num20 = new(array20);
 
 // Criando a lista com 20 elementos
-BigInt[] list = [num12, num4, num17, num3, num13, num10, num1, num16, num9, num20, num7, num5, num11, num19, num18, num2, num6, num8, num14, num15];
+BigInt[] list = [num12, num4, num17, num3, num13, num10, num15, num16, num9, num20, num7, num5, num11, num19, num18, num2, num6, num8, num14, num1];
 
 foreach (var item in list)
 {
@@ -108,39 +108,27 @@ BigInt[] Sort(BigInt[] array)
     var leftSide = array[startIndex..middleIndex];
     var rightSide = array[middleIndex..endIndex];
 
-    
-    // Console.WriteLine("----AAAA----");
-    // Console.WriteLine("----LEFT----");
-    // foreach (var item in leftSide)
-    // {
-    //     Console.WriteLine(item);
-    // }
-    // Console.WriteLine("-----RIGHT-------");
-    // foreach (var item in rightSide)
-    // {
-    //     Console.WriteLine(item);
-    // }
-
+    leftSide = Order(leftSide);
+    rightSide = Order(rightSide);
 
     if(leftSide.Length > 3)
     {
         leftSide = Sort(leftSide);
-    }
-    else{
-        leftSide = Order(leftSide);
     }
 
      if(rightSide.Length > 3)
     {
         rightSide = Sort(rightSide);
     }
-    else{
-        rightSide = Order(rightSide);
-    }
     
 
-    return [..leftSide, ..rightSide];
+    return Order([..leftSide, ..rightSide]);
 }
+
+
+
+
+
 
 BigInt[] Order(BigInt[] array)
 {
@@ -156,13 +144,13 @@ BigInt[] Order(BigInt[] array)
         if(rightIndex > elements - 1)
         {
             helper[i] = array[leftIndex];
-            rightIndex++;
+            leftIndex++;
             continue;
         }
         if(leftIndex == elements / 2)
         {
             helper[i] = array[rightIndex];
-            leftIndex++;
+            rightIndex++;
             continue;
         }
 
@@ -180,32 +168,28 @@ BigInt[] Order(BigInt[] array)
     return helper;
 }
 
-// List<BigInt> getRandom(List<BigInt> array)
-// {
-
-// }
 
 public class BigInt 
 {
-    public byte[] _array { get; set; }
+    public byte[] Array { get; set; }
 
-    public BigInt(byte[] array)
+    public BigInt(byte[] _array)
     {
-        _array = array;
+        Array = _array;
     }
 
     public static BigInt operator +(BigInt a, BigInt b) 
     { 
-        var bigger = a._array.Length < b._array.Length ? b : a;
+        var bigger = a.Array.Length < b.Array.Length ? b : a;
 
-        int maxLength = bigger._array.Length;
+        int maxLength = bigger.Array.Length;
         List<byte> result = new List<byte>(maxLength + 1);
         int carry = 0;
 
         for (int i = 0 ; i < maxLength ; i++)
         {
-            int aValue = i < a._array.Length ? a._array[i] : 0;
-            int bValue = i < b._array.Length ? b._array[i] : 0;
+            int aValue = i < a.Array.Length ? a.Array[i] : 0;
+            int bValue = i < b.Array.Length ? b.Array[i] : 0;
 
             int sum = aValue + bValue + carry;
             carry = sum / 256; 
@@ -221,17 +205,17 @@ public class BigInt
 
     public static bool operator >(BigInt a, BigInt b) 
     { 
-        if (a._array.Length > b._array.Length)
+        if (a.Array.Length > b.Array.Length)
             return true;
 
-        if (a._array.Length < b._array.Length)
+        if (a.Array.Length < b.Array.Length)
             return false;
 
-        for (int i = a._array.Length - 1; i >= 0; i--)
+        for (int i = a.Array.Length - 1; i >= 0; i--)
         {
-            if (a._array[i] > b._array[i])
+            if (a.Array[i] > b.Array[i])
                 return true;
-            if (a._array[i] < b._array[i])
+            if (a.Array[i] < b.Array[i])
                 return false;
         }
         return false;
@@ -244,12 +228,12 @@ public class BigInt
     public static bool operator ==(BigInt a, BigInt b) 
     { 
 
-        if (a._array.Length != b._array.Length)
+        if (a.Array.Length != b.Array.Length)
             return false;
 
-        for (int i = 0; i < a._array.Length; i++)
+        for (int i = 0; i < a.Array.Length; i++)
         {
-            if (a._array[i] != b._array[i])
+            if (a.Array[i] != b.Array[i])
                 return false;
         }
         return true;
@@ -260,10 +244,20 @@ public class BigInt
 
    public override string ToString()
     {
-        return string.Join(" ", _array.Select(b => b.ToString()));
+        return string.Join(" ", Array.Select(b => b.ToString()));
     }
 
     internal int CompareTo(BigInt bigInt)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
     {
         throw new NotImplementedException();
     }
