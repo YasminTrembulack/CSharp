@@ -1,0 +1,15 @@
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\bin\Debug\net8.0\Csharp-padrao-projeto.exe
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\bin\Debug\net8.0\Csharp-padrao-projeto.deps.json
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\bin\Debug\net8.0\Csharp-padrao-projeto.runtimeconfig.json
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\bin\Debug\net8.0\Csharp-padrao-projeto.dll
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\bin\Debug\net8.0\Csharp-padrao-projeto.pdb
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.AssemblyInfoInputs.cache
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.AssemblyInfo.cs
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.csproj.CoreCompileInputs.cache
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.sourcelink.json
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.dll
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\refint\Csharp-padrao-projeto.dll
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.pdb
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\Csharp-padrao-projeto.genruntimeconfig.cache
+C:\Users\disrct\Desktop\Yas\CSharp\Csharp-padrao-projeto\obj\Debug\net8.0\ref\Csharp-padrao-projeto.dll
