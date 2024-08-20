@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\disrct\\Desktop\\Yas\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj": {}
+    "C:\\Users\\disrct\\Desktop\\Yasmin\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj": {}
   },
   "projects": {
-    "C:\\Users\\disrct\\Desktop\\Yas\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj": {
+    "C:\\Users\\disrct\\Desktop\\Yasmin\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\Yas\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj",
+        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\Yasmin\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj",
         "projectName": "Csharp-padrao-projeto",
-        "projectPath": "C:\\Users\\disrct\\Desktop\\Yas\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj",
+        "projectPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\CSharp\\Csharp-padrao-projeto\\Csharp-padrao-projeto.csproj",
         "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\disrct\\Desktop\\Yas\\CSharp\\Csharp-padrao-projeto\\obj\\",
+        "outputPath": "C:\\Users\\disrct\\Desktop\\Yasmin\\CSharp\\Csharp-padrao-projeto\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

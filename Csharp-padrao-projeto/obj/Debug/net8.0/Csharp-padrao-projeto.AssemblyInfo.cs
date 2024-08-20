@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Csharp-padrao-projeto")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06b21cfdd43736ed7974469baba4d78e9849bfa5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1fd248c8a2b6df5b1d80333fd654ae48e851589a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Csharp-padrao-projeto")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Csharp-padrao-projeto")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
