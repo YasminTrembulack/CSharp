@@ -1,6 +1,6 @@
 namespace PokeAPI.Models;
 
-public class Stats
+public class Stats : BaseModel
 {
     public required int HP { get; set; }
     public required int Attack { get; set; }

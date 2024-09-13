@@ -1,6 +1,6 @@
 namespace PokeAPI.Models;
 
-public class Generation
+public class Generation : BaseModel
 {
     public required string Name { get; set; }
 }
