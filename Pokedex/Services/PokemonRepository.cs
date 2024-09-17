@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 using System.Net;
+=======
+
+>>>>>>> 85cdeb49e5a271dea2ed2f864d89ca0e82d846dd
 using PokeAPI.Models;
 using PokeAPI.Repositories;
 
 public class PokemonRepository : IPokemonRepository
 {
 
+<<<<<<< HEAD
     readonly PokedexContext ctx;
     public PokemonRepository(PokedexContext context)
         => ctx = context;
@@ -14,6 +19,9 @@ public class PokemonRepository : IPokemonRepository
     }
     
     public Task<Pokemon> Add(Pokemon team)
+=======
+    public Task<Pokemon> Create(Pokemon pokemon)
+>>>>>>> 85cdeb49e5a271dea2ed2f864d89ca0e82d846dd
     {
         throw new NotImplementedException();
     }
@@ -28,6 +36,7 @@ public class PokemonRepository : IPokemonRepository
         throw new NotImplementedException();
     }
 
+<<<<<<< HEAD
     public async Task SavePokemonAsync(string name)
     {
         var html = GetPage($"https://pokemon.fandom.com/wiki/{name}");
@@ -47,5 +56,10 @@ public class PokemonRepository : IPokemonRepository
         var response = await client.GetAsync(url);
         var html = await response.Content.ReadAsStringAsync();
         return html;
+=======
+    public Task<IEnumerable<Pokemon>> GetPokemons(int pageIndex, int pageSize)
+    {
+        throw new NotImplementedException();
+>>>>>>> 85cdeb49e5a271dea2ed2f864d89ca0e82d846dd
     }
 }
