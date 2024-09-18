@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musify</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <div class="main-container">
+
+        <header class="video-margin"></header>
+
+        <div class="video-container">
+            <h1>Upload de Música</h1>
+            <form id="uploadForm" enctype="multipart/form-data" method="post" action="http://localhost:5036/music">
+                <label for="fileInput">Escolha um arquivo de música:</label>
+                <input type="file" id="fileInput" name="payloadFiles" accept="audio/*" multiple required>
+                <br><br>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <footer class="video-margin"></footer>
+    
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Por favor, escolha um arquivo para enviar.');
+                event.preventDefault(); // Impede o envio do formulário
+            }
+        };
+    </script>
+</body>
+</html>
