@@ -14,7 +14,6 @@ public class MusicContext(DbContextOptions opt) : DbContext(opt)
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-
         builder.Entity<MusicInfo>()
             .HasMany(mi => mi.Genres)
             .WithMany(g => g.Musics)

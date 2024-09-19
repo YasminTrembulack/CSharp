@@ -7,6 +7,7 @@ using Models;
 public interface IMusicUploadService
 {
     Task<Guid> Upload(IFormFile file);
-    Task<UploadProcess> Verify(Guid id);
-    Task<bool> UpdateProcess(UploadProcess update);
+    Task<UploadProcess?> Verify(Guid id);
+    Task UpdateProcess(UploadProcess update);
+    Task AddMusic(Music music);
 }

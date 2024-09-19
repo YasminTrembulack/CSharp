@@ -1,6 +1,10 @@
+using System.Diagnostics;
+using System.Text;
+using Musify.Models;
+
 namespace Musify.Services;
 
-public class UploadBackgroundService(FileUploadRequestQueueService service, IMusicUploadService uploadService) : BackgroundService
+public class UploadBackgroundService(FileUploadRequestQueueService service, IServiceProvider serviceProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -14,93 +18,110 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, IMus
 
     private async Task ProcessUpload(FileUploadRequest request)
     {
+        using var scope = serviceProvider.CreateScope();
+
+        var musicUploadService = scope.ServiceProvider.GetRequiredService<IMusicUploadService>();
 
         var file = request.File;
-        var process = request.Process;
+        var processUp = request.Process;
 
-        process.Status = "Teste...";
-        bool result = await uploadService.UpdateProcess(process);
-        System.Console.WriteLine(result);
+        var stream = file.OpenReadStream();
+        var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        var bytes = ms.ToArray();
 
+        var dir = Directory.CreateTempSubdirectory("music");
+        var filesPath = Path.Combine(dir.FullName, "music.mp3");
+        var uploadPath = Path.Combine(dir.FullName, "music.m3u8");
+        await File.WriteAllBytesAsync(filesPath, bytes);
 
-        // var stream = file.OpenReadStream();
-        // var ms = new MemoryStream();
-        // await stream.CopyToAsync(ms);
-        // var bytes = ms.GetBuffer();
+        var ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg.exe");
+        string strCmdText = $"{ffmpegPath} -i {filesPath} -codec copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls {uploadPath}";
 
-        // var dir = Directory.CreateTempSubdirectory("music");
-        // var filesPath = Path.Combine(dir.FullName, "music.mp3");
-        // var uploadPath = Path.Combine(dir.FullName, "music.m3u8");
-        // await File.WriteAllBytesAsync(filesPath, bytes);
+        var processInfo = new ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            Arguments = $"/C {strCmdText}",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
 
-        // var ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg.exe");
-        // string strCmdText = $"{ffmpegPath} -i {filesPath} -codec copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls {UploadPath}";
+        var process = new Process { StartInfo = processInfo };
+        process.Start();
 
-        // var processInfo = new ProcessStartInfo
-        // {
-        //     FileName = "cmd.exe",
-        //     Arguments = $"/C {strCmdText}",
-        //     RedirectStandardOutput = true,
-        //     RedirectStandardError = true,
-        //     UseShellExecute = false,
-        //     CreateNoWindow = true
-        // };
+        processUp.LoadingBar = 30;
+        await musicUploadService.UpdateProcess(processUp);
 
-        // await Task.Factory.StartNew(() =>
-        // {
-        //     var process = new Process { StartInfo = processInfo };
-        //     process.Start();
-        //     var output = process.StandardOutput.ReadToEnd();
-        //     var error = process.StandardError.ReadToEnd();
-        //     process.WaitForExit();
-        // });
+        // Ler saída e erro de forma assíncrona
+        var outputTask = process.StandardOutput.ReadToEndAsync();
+        var errorTask = process.StandardError.ReadToEndAsync();
 
-        // var files = Directory.GetFiles(dir.FullName);
-        // System.Console.WriteLine(dir.FullName);
+        await Task.WhenAll(outputTask, errorTask);
+        process.WaitForExit();
 
-        // foreach (var item in files)
-        // {
-        //     System.Console.WriteLine(item);
-        // }
+        processUp.LoadingBar = 70;
+        await musicUploadService.UpdateProcess(processUp);
 
-        // var header = files
-        //     .FirstOrDefault(f => f.EndsWith(".m3u8"))!;
-        // var parts = files
-        //     .Where(f => f != header);
+        var files = Directory.GetFiles(dir.FullName);
 
-        // var dict = new Dictionary<string, Guid>();
+        var header = files
+            .FirstOrDefault(f => f.EndsWith(".m3u8"))!;
+        var parts = files
+            .Where(f => f != header);
 
-        // foreach (var part in parts)
-        // {
-        //     System.Console.WriteLine(part);
-        //     var music = new Music
-        //     {
-        //         Bytes = ReadAllBytes(part)
-        //     };
-        //     // await repo.Add(music);
+        var dict = new Dictionary<string, Guid>();
 
-        //     var fileName = Path.GetFileName(part);
-        //     dict.Add(fileName, music.Id);
-        // }
+        foreach (var part in parts)
+        {
+            var music = new Music
+            {
+                Bytes = await File.ReadAllBytesAsync(part)
+            };
+            await musicUploadService.AddMusic(music);
 
-        // var lines = ReadAllLines(header);
-        // var sb = new StringBuilder();
-        // foreach (var line in lines)
-        // {
-        //     if (!dict.TryGetValue(line, out var id))
-        //     {
-        //         sb.AppendLine(line);
-        //         continue;
-        //     }
+            var fileName = Path.GetFileName(part);
+            dict.Add(fileName, music.Id);
+        }
 
-        //     sb.AppendLine(id.ToString());
-        // }
-        // var processedHeader = sb.ToString();
+        processUp.LoadingBar = 80;
+        await musicUploadService.UpdateProcess(processUp);
 
-        // var contentHeader = new Music
-        // {
-        //     Bytes = Encoding.UTF8.GetBytes(processedHeader)
-        // };
-        // // await repo.Add(contentHeader);
+        var lines = await File.ReadAllLinesAsync(header);
+
+        var sb = new StringBuilder();
+        System.Console.WriteLine("SB");
+        foreach (var line in lines)
+        {
+            if (!dict.TryGetValue(line, out var id))
+            {
+                sb.AppendLine(line);
+                System.Console.WriteLine($"APPEND  {line}");
+
+                continue;
+            }
+
+            sb.AppendLine(id.ToString());
+            System.Console.WriteLine($"APPEND  {line}");
+
+        }
+        var processedHeader = sb.ToString();
+
+        processUp.LoadingBar = 95;
+        await musicUploadService.UpdateProcess(processUp);
+
+        var contentHeader = new Music
+        {
+            Bytes = Encoding.UTF8.GetBytes(processedHeader)
+        };
+        
+        processUp.LoadingBar = 100;
+        processUp.Finished = true;
+        processUp.Status = "Finished";
+        await musicUploadService.UpdateProcess(processUp);
+
+        Directory.Delete(dir.FullName, true);
+        await musicUploadService.AddMusic(contentHeader);
     }
 }

@@ -10,7 +10,7 @@ using Services;
 using Repositories;
 
 [ApiController]
-[Route("music")]
+[Route("upload-music")]
 public class UploadProcessController(IMusicUploadService uploader) : ControllerBase
 {
     [HttpPost]
@@ -23,10 +23,14 @@ public class UploadProcessController(IMusicUploadService uploader) : ControllerB
         var processId = await uploader.Upload(file);
         return Ok(processId);
     }
-
+    
     [HttpGet("{id}")]
     public async Task<ActionResult> GetUploadProcess(Guid id)
     {
-        return BadRequest();
+        var process = await uploader.Verify(id);
+
+        if (process == null)
+            return NotFound();
+        return Ok(process);
     }
 }

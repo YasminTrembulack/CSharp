@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 namespace Musify.Services;
 
+using System.Runtime.CompilerServices;
 using Models;
 using Repositories;
 
 public class DefaultMusicUploadService(FileUploadRequestQueueService queueService, MusicContext ctx) : IMusicUploadService
 {
 
-    public async Task<UploadProcess> Verify(Guid id)
+    public async Task<UploadProcess?> Verify(Guid id)
     {
-        throw new Exception();
+        var result = await ctx.Uploads.FindAsync(id);
+
+        return result;
     }
 
 
-    public async Task<bool> UpdateProcess(UploadProcess update)
+    public async Task UpdateProcess(UploadProcess update)
     {
         var existingUpload = await ctx.Uploads.FindAsync(update.Id);
 
@@ -23,7 +26,12 @@ public class DefaultMusicUploadService(FileUploadRequestQueueService queueServic
 
         await ctx.SaveChangesAsync();
 
-        return true;
+    }
+
+    public async Task AddMusic(Music music)
+    {
+        await ctx.Musics.AddAsync(music);
+        await ctx.SaveChangesAsync();
     }
 
     public async Task<Guid> Upload(IFormFile file)
@@ -36,4 +44,5 @@ public class DefaultMusicUploadService(FileUploadRequestQueueService queueServic
 
         return process.Id;
     }
+
 }

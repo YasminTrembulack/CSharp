@@ -16,7 +16,6 @@ public class MusicInfo : BaseModel
     public required string Album { get; set; }
     
     public required ICollection<Genre> Genres { get; set; }
-
     public required Guid Music { get; set; }
     public required Guid? VideoClip { get; set; }
 }
