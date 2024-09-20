@@ -1,14 +1,19 @@
 import { useEffect, useRef } from 'react';
 import Hls from 'hls.js';
+import { Music } from './styles';
+import '../../styles/style.css'
+import { useParams } from 'react-router';
 
 
 export default function PlayMusic() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const url = "http://localhost:5036/music/63FDCD59-318D-47E9-672C-08DCD998FF32";
+
+  const { id } = useParams();
+
+  const url = `http://localhost:5036/music/${id}`;
 
   useEffect(() => {
     var hls: Hls | null = null;
-
 
     if (videoRef.current) {
       // Verifica se o navegador suporta HLS nativamente
@@ -36,6 +41,17 @@ export default function PlayMusic() {
     };
   }, [url]);
 
-    return <video ref={videoRef} controls style={{ width: '100%' }} />;
+    return(
+      <div className="main-container">
+
+        <header className="video-margin"></header>
+        <div className="video-container">
+
+          <Music ref={videoRef} controls />
+        </div>
+        <footer className="video-margin"></footer>
+        
+      </div>
+    )
 };
 
