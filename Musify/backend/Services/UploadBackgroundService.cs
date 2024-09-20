@@ -103,7 +103,7 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
             }
 
             sb.AppendLine(id.ToString());
-            System.Console.WriteLine($"APPEND  {line}");
+            System.Console.WriteLine($"APPEND  {id}");
 
         }
         var processedHeader = sb.ToString();
@@ -116,12 +116,14 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
             Bytes = Encoding.UTF8.GetBytes(processedHeader)
         };
         
+        Directory.Delete(dir.FullName, true);
+
         processUp.LoadingBar = 100;
         processUp.Finished = true;
         processUp.Status = "Finished";
+        var headerId = await musicUploadService.AddMusic(contentHeader);
+        System.Console.WriteLine("headerId: " + headerId.ToString());
+        processUp.MusicHeader = headerId;
         await musicUploadService.UpdateProcess(processUp);
-
-        Directory.Delete(dir.FullName, true);
-        await musicUploadService.AddMusic(contentHeader);
     }
 }

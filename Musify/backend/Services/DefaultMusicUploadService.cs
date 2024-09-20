@@ -18,20 +18,16 @@ public class DefaultMusicUploadService(FileUploadRequestQueueService queueServic
 
     public async Task UpdateProcess(UploadProcess update)
     {
-        var existingUpload = await ctx.Uploads.FindAsync(update.Id);
-
-        existingUpload.LoadingBar = update.LoadingBar;
-        existingUpload.Status = update.Status;
-        existingUpload.Finished = update.Finished;
-
+        // var existingUpload = await ctx.Uploads.FindAsync(update.Id);
+        ctx.Uploads.Update(update);
         await ctx.SaveChangesAsync();
-
     }
 
-    public async Task AddMusic(Music music)
+    public async Task<Guid> AddMusic(Music music)
     {
         await ctx.Musics.AddAsync(music);
         await ctx.SaveChangesAsync();
+        return music.Id;
     }
 
     public async Task<Guid> Upload(IFormFile file)

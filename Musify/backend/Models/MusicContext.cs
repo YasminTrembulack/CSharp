@@ -35,5 +35,10 @@ public class MusicContext(DbContextOptions opt) : DbContext(opt)
             .WithMany()                  
             .HasForeignKey(mi => mi.VideoClip) 
             .OnDelete(DeleteBehavior.Cascade); 
+
+        builder.Entity<UploadProcess>()
+            .HasOne<Music>()              
+            .WithMany()                  
+            .HasForeignKey(mi => mi.MusicHeader);
     }
 }

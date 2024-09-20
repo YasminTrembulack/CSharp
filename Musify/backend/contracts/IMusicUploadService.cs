@@ -9,5 +9,5 @@ public interface IMusicUploadService
     Task<Guid> Upload(IFormFile file);
     Task<UploadProcess?> Verify(Guid id);
     Task UpdateProcess(UploadProcess update);
-    Task AddMusic(Music music);
+    Task<Guid> AddMusic(Music music);
 }

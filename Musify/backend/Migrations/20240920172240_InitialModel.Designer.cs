@@ -12,8 +12,8 @@ using Musify.Models;
 namespace Musify.Migrations
 {
     [DbContext(typeof(MusicContext))]
-    [Migration("20240918134046_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240920172240_InitialModel")]
+    partial class InitialModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,11 +156,16 @@ namespace Musify.Migrations
                     b.Property<int>("LoadingBar")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("MusicHeader")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MusicHeader");
 
                     b.ToTable("Uploads");
                 });
@@ -216,6 +221,13 @@ namespace Musify.Migrations
                         .WithMany()
                         .HasForeignKey("VideoClip")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Musify.Models.UploadProcess", b =>
+                {
+                    b.HasOne("Musify.Models.Music", null)
+                        .WithMany()
+                        .HasForeignKey("MusicHeader");
                 });
 #pragma warning restore 612, 618
         }

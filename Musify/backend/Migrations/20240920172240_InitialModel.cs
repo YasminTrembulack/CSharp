@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Musify.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class InitialModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,20 +43,6 @@ namespace Musify.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Uploads",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoadingBar = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Finished = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Uploads", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "VideoClips",
                 columns: table => new
                 {
@@ -69,6 +55,26 @@ namespace Musify.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VideoClips", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Uploads",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoadingBar = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Finished = table.Column<bool>(type: "bit", nullable: false),
+                    MusicHeader = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Uploads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Uploads_Musics_MusicHeader",
+                        column: x => x.MusicHeader,
+                        principalTable: "Musics",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -143,6 +149,11 @@ namespace Musify.Migrations
                 name: "IX_MusicInfos_VideoClip",
                 table: "MusicInfos",
                 column: "VideoClip");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Uploads_MusicHeader",
+                table: "Uploads",
+                column: "MusicHeader");
         }
 
         /// <inheritdoc />

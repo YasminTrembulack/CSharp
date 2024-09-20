@@ -20,6 +20,16 @@ builder.Services.AddScoped<IMusicUploadService, DefaultMusicUploadService>();
 builder.Services.AddSingleton<FileUploadRequestQueueService>();
 builder.Services.AddHostedService<UploadBackgroundService>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowSpecificOrigins",
+                      policy  =>
+                      {
+                        policy.WithOrigins("*");
+                      });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -29,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigins");
 
 app.UseAuthorization();
 

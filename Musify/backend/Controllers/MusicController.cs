@@ -22,6 +22,6 @@ public class MusicController(IMusicRepository repo) : ControllerBase
         if (music is null)
             return NotFound();
 
-        return Ok(music);
+        return File(music.Bytes, "application/octet-stream");
     }
 }
