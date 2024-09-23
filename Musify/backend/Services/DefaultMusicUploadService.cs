@@ -30,13 +30,13 @@ public class DefaultMusicUploadService(FileUploadRequestQueueService queueServic
         return music.Id;
     }
 
-    public async Task<Guid> Upload(IFormFile file)
+    public async Task<Guid> Upload(IFormFile file, Guid musicInfoId)
     {
         UploadProcess process = new UploadProcess();
-        ctx.AddAsync(process);
+        await ctx.AddAsync(process);
         await ctx.SaveChangesAsync();
 
-        await queueService.Queue.Writer.WriteAsync(new(file, process));
+        await queueService.Queue.Writer.WriteAsync(new(file, process, musicInfoId));
 
         return process.Id;
     }

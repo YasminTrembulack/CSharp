@@ -23,4 +23,15 @@ public class MusicInfoRepository(MusicContext ctx) : IMusicInfoRepository
             .Take(pageSize)
             .ToListAsync();
 
+    public async Task UpdateMusicHeader(Guid id, Guid header)
+    {
+        var musicInfo = await ctx.MusicInfos.FindAsync(id);
+
+        if (musicInfo == null) 
+            return;
+
+        musicInfo.Music = header;
+        ctx.MusicInfos.Update(musicInfo);
+        await ctx.SaveChangesAsync();
+    }
 }

@@ -30,20 +30,20 @@ public class MusicInfoController(IMusicInfoRepository repo) : ControllerBase
         return Ok(musicInfo);
     }
 
-    [HttpPost("{musicId}")]
-    public async Task<ActionResult> CreateMusicInfo(Guid musicId, MusicInfoDTO payload)
+    [HttpPost]
+    public async Task<ActionResult> CreateMusicInfo(MusicInfoDTO payload)
     {
 
         // ARRUMAR O GENTE POIS ELE É MUITOS PARA MUITOS ENT TEM A TABELA RELACIONAL
-        ICollection<Genre> genres = [];
-        foreach (var item in payload.Genres)
-        {
-            var genre = new Genre
-            {
-                Name = item,
-            };
-            genres.Add(genre);
-        }
+        // ICollection<Genre> genres = [];
+        // foreach (var item in payload.Genres)
+        // {
+        //     var genre = new Genre
+        //     {
+        //         Name = item,
+        //     };
+        //     genres.Add(genre);
+        // }
 
         var musicInfo = new MusicInfo
         {
@@ -53,13 +53,11 @@ public class MusicInfoController(IMusicInfoRepository repo) : ControllerBase
             Year = payload.Year,
             Lyrics = payload.Lyrics,
             Album = payload.Album,
-            Genres = genres,
-            Music = musicId,
-            VideoClip = null
+            // Genres = genres
         };
         await repo.Add(musicInfo);
 
-        return Created("/music-info", musicInfo);
+        return Ok(musicInfo);
     }
 
     public record MusicInfoDTO(
@@ -68,8 +66,7 @@ public class MusicInfoController(IMusicInfoRepository repo) : ControllerBase
         string Duration,
         int Year,
         string Lyrics,
-        string Album,
-        List<string> Genres
+        string Album
     );
 
 }

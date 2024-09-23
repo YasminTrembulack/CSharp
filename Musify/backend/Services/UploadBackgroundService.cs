@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using Musify.Models;
+using Musify.Repositories;
 
 namespace Musify.Services;
 
@@ -19,14 +20,15 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
     private async Task ProcessUpload(FileUploadRequest request)
     {
         using var scope = serviceProvider.CreateScope();
-
+        
         var musicUploadService = scope.ServiceProvider.GetRequiredService<IMusicUploadService>();
 
         var file = request.File;
         var processUp = request.Process;
+        var MusicInfoId = request.MusicInfoId;
 
-        var stream = file.OpenReadStream();
-        var ms = new MemoryStream();
+        using var stream = file.OpenReadStream();
+        using var ms = new MemoryStream();
         await stream.CopyToAsync(ms);
         var bytes = ms.ToArray();
 
@@ -91,19 +93,19 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
         var lines = await File.ReadAllLinesAsync(header);
 
         var sb = new StringBuilder();
-        System.Console.WriteLine("SB");
+        Console.WriteLine("SB");
         foreach (var line in lines)
         {
             if (!dict.TryGetValue(line, out var id))
             {
                 sb.AppendLine(line);
-                System.Console.WriteLine($"APPEND  {line}");
+                Console.WriteLine($"APPEND  {line}");
 
                 continue;
             }
 
             sb.AppendLine(id.ToString());
-            System.Console.WriteLine($"APPEND  {id}");
+            Console.WriteLine($"APPEND  {id}");
 
         }
         var processedHeader = sb.ToString();
@@ -122,8 +124,12 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
         processUp.Finished = true;
         processUp.Status = "Finished";
         var headerId = await musicUploadService.AddMusic(contentHeader);
-        System.Console.WriteLine("headerId: " + headerId.ToString());
-        processUp.MusicHeader = headerId;
+        Console.WriteLine("headerId: " + headerId.ToString());
+
+        var musicInfoUploadService = scope.ServiceProvider.GetRequiredService<IMusicInfoRepository>();
+
+        await musicInfoUploadService.UpdateMusicHeader(MusicInfoId, headerId);
         await musicUploadService.UpdateProcess(processUp);
+        return;
     }
 }

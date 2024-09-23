@@ -8,21 +8,21 @@ public class MusicContext(DbContextOptions opt) : DbContext(opt)
     public DbSet<MusicInfo> MusicInfos { get; set; }
     public DbSet<VideoClip> VideoClips { get; set; }
     public DbSet<Music> Musics { get; set; }
-    public DbSet<Genre> Genres { get; set; }
+    // public DbSet<Genre> Genres { get; set; }
     public DbSet<UploadProcess> Uploads { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<MusicInfo>()
-            .HasMany(mi => mi.Genres)
-            .WithMany(g => g.Musics)
-            .UsingEntity(j => j.ToTable("MusicGenre")); 
+        // builder.Entity<MusicInfo>()
+        //     .HasMany(mi => mi.Genres)
+        //     .WithMany(g => g.Musics)
+        //     .UsingEntity(j => j.ToTable("MusicGenre")); 
 
-        builder.Entity<Genre>()
-            .HasMany(g => g.Musics)
-            .WithMany(mi => mi.Genres)
-            .UsingEntity(j => j.ToTable("MusicGenre")); 
+        // builder.Entity<Genre>()
+        //     .HasMany(g => g.Musics)
+        //     .WithMany(mi => mi.Genres)
+        //     .UsingEntity(j => j.ToTable("MusicGenre")); 
 
         builder.Entity<MusicInfo>()
             .HasOne<Music>()              
@@ -36,9 +36,5 @@ public class MusicContext(DbContextOptions opt) : DbContext(opt)
             .HasForeignKey(mi => mi.VideoClip) 
             .OnDelete(DeleteBehavior.Cascade); 
 
-        builder.Entity<UploadProcess>()
-            .HasOne<Music>()              
-            .WithMany()                  
-            .HasForeignKey(mi => mi.MusicHeader);
     }
 }

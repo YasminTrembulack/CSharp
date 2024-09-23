@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 
 using Musify.Models;
@@ -20,14 +21,15 @@ builder.Services.AddScoped<IMusicUploadService, DefaultMusicUploadService>();
 builder.Services.AddSingleton<FileUploadRequestQueueService>();
 builder.Services.AddHostedService<UploadBackgroundService>();
 
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "AllowSpecificOrigins",
-                      policy  =>
-                      {
-                        policy.WithOrigins("*");
-                      });
+    options.AddPolicy(name: "AllowSpecificOrigins", policy  =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithExposedHeaders("Content-Type");
+    });
 });
 
 var app = builder.Build();

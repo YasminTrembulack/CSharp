@@ -6,5 +6,4 @@ public class UploadProcess
     public int LoadingBar { get; set; } = 0;
     public string Status { get; set; } = "Loading...";
     public bool Finished { get; set; } = false;
-    public Guid? MusicHeader { get; set; } = null;
 }
