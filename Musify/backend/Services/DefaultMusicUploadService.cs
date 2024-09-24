@@ -36,7 +36,16 @@ public class DefaultMusicUploadService(FileUploadRequestQueueService queueServic
         await ctx.AddAsync(process);
         await ctx.SaveChangesAsync();
 
-        await queueService.Queue.Writer.WriteAsync(new(file, process, musicInfoId));
+        using var stream = file.OpenReadStream();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        var buffer = ms.GetBuffer();
+
+        var dir = Directory.CreateTempSubdirectory("music");
+        var filesPath = Path.Combine(dir.FullName, "music.mp3");
+        await File.WriteAllBytesAsync(filesPath, buffer);
+
+        await queueService.Queue.Writer.WriteAsync(new(dir.FullName, process, musicInfoId));
 
         return process.Id;
     }

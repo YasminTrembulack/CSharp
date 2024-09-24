@@ -20,22 +20,14 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
     private async Task ProcessUpload(FileUploadRequest request)
     {
         using var scope = serviceProvider.CreateScope();
-        
         var musicUploadService = scope.ServiceProvider.GetRequiredService<IMusicUploadService>();
 
-        var file = request.File;
+        var folder = request.TempFolder;
         var processUp = request.Process;
         var MusicInfoId = request.MusicInfoId;
-
-        using var stream = file.OpenReadStream();
-        using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
-        var bytes = ms.ToArray();
-
-        var dir = Directory.CreateTempSubdirectory("music");
-        var filesPath = Path.Combine(dir.FullName, "music.mp3");
-        var uploadPath = Path.Combine(dir.FullName, "music.m3u8");
-        await File.WriteAllBytesAsync(filesPath, bytes);
+        
+        var filesPath = Path.Combine(folder, "music.mp3");
+        var uploadPath = Path.Combine(folder, "music.m3u8");
 
         var ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg.exe");
         string strCmdText = $"{ffmpegPath} -i {filesPath} -codec copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls {uploadPath}";
@@ -66,7 +58,7 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
         processUp.LoadingBar = 70;
         await musicUploadService.UpdateProcess(processUp);
 
-        var files = Directory.GetFiles(dir.FullName);
+        var files = Directory.GetFiles(folder);
 
         var header = files
             .FirstOrDefault(f => f.EndsWith(".m3u8"))!;
@@ -118,7 +110,7 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
             Bytes = Encoding.UTF8.GetBytes(processedHeader)
         };
         
-        Directory.Delete(dir.FullName, true);
+        Directory.Delete(folder, true);
 
         processUp.LoadingBar = 100;
         processUp.Finished = true;

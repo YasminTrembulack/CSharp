@@ -23,7 +23,7 @@ builder.Services.AddHostedService<UploadBackgroundService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "AllowSpecificOrigins", policy  =>
+    options.AddPolicy(name: "AllowAllOrigins", policy  =>
     {
         policy.AllowAnyOrigin()
             .AllowAnyMethod()
@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
