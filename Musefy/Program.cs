@@ -14,8 +14,7 @@ builder.Services.AddDbContext<MusifyContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SQL-Server"))
 );
 
-builder.Services.AddScoped<IMusicRepository, MusicRepository>();
-builder.Services.AddHostedService<UploadBackgroundService>();
+builder.Services.AddScoped<IMusicRepository, MusicInfoRepositoryService>();
 
 
 builder.Services.AddCors(options =>
