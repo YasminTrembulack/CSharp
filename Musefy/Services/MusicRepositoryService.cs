@@ -5,7 +5,7 @@ namespace  Musify.Services;
 using Models;
 using Repositories;
 
-public class MusicInfoRepository(MusifyContext ctx) : IMusicRepository
+public class MusicInfoRepositoryService(MusifyContext ctx) : IMusicRepository
 {
     public async Task<Music> Add(Music music)
     {

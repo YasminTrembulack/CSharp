@@ -8,5 +8,8 @@ public class Music : BaseModel
     public required int Year { get; set; }
     public required string Lyrics { get; set; }
     public required string Album { get; set; }
-    public User? User { get; set; } = null;
+    public required User User { get; set; }
+    public required ICollection<MusicPieces> Pieces { get; set; }
+    public Guid? MusicHeaderId { get; set; }
+    public MusicPieces? MusicHeader { get; set; } = null;
 }

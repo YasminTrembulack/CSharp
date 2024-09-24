@@ -2,41 +2,42 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Musify.Controllers;
 
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Models;
+using Musify.Services;
 using Repositories;
 
 [ApiController]
 [Route("auth")]
-public class AuthController() : ControllerBase
-{
-    [HttpPost("/login")]
-    public async Task<ActionResult> Login(User id)
+public class AuthController(IUserRepository repo) : ControllerBase
+{   
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<ActionResult> Login([FromBody]LoginDTO login)
     {
-        // var musicInfo = await repo.GetById(id);
+        var user = await repo.Get(login.Username, login.Password);
 
-        // if (musicInfo is null)
-        //     return NotFound();
+        if (user is null)
+            return Unauthorized();
 
-        return Ok(null);
+        var token = TokenService.GenerateToken(user);
+
+        return Ok(token);
     }
 
-    [HttpPost("/register")]
+    [HttpGet("register")]
+    [Authorize]
     public async Task<ActionResult> Register(User payload)
     {
 
-        // var music = new Music
-        // {
-        //     Title = payload.Title,
-        //     Artist = payload.Artist,
-        //     Duration = payload.Duration,
-        //     Year = payload.Year,
-        //     Lyrics = payload.Lyrics,
-        //     Album = payload.Album,
-        //     // Genres = genres
-        // };
-        // await repo.Add(music);
+        var user = await repo.Get("yas", "123");
 
-        return Ok(null);
+        return Ok("null");
     }
+
+    public record LoginDTO
+    (
+        string Username,
+        string Password
+    );
 }

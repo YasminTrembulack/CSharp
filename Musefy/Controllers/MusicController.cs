@@ -39,6 +39,8 @@ public class MusicInfoController(IMusicRepository repo) : ControllerBase
             Year = payload.Year,
             Lyrics = payload.Lyrics,
             Album = payload.Album,
+            User = null!,
+            Pieces = []
         };
         await repo.Add(music);
 
