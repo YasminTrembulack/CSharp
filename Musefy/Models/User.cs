@@ -4,8 +4,13 @@ public class User : BaseModel
 {
     public required string Username { get; set; }
     public required string Password { get; set; }
-    public required string BirthDate { get; set; }
+    public required DateTime BirthDate { get; set; }
     public required string Role { get; set; }
     public ICollection<Music> Musics { get; set;} = [];
+
+    public static implicit operator User?(string? v)
+    {
+        throw new NotImplementedException();
+    }
 }
 

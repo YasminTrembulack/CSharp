@@ -4,14 +4,22 @@ using Musify.Repositories;
 
 public class UserReposritoryService(MusifyContext ctx) : IUserRepository
 {
-    public async Task<User?> Get(string username, string password)
+    public async Task<User?> VerifyLogin(string username, string password)
     {   
-        if(username is null || password is null)
-            return null;
         var users = await ctx.Users.ToListAsync();
-        List<User> user = [];
-        user.Add(new User{ Username = "Yasmin", Password = "1234", BirthDate = "06/12/2005", Role = "ADM"  });
-
-        return user.Where(x => x.Username.ToLower().Equals(username.ToLower()) && x.Password.Equals(password)).FirstOrDefault();
+        System.Console.WriteLine(users);
+        return users.Where(x => x.Username.ToLower().Equals(username.ToLower()) && x.Password.Equals(password)).FirstOrDefault();
     }
+
+    public async Task<User?> GetByUsername(string username)
+        =>  await ctx.Users.FirstOrDefaultAsync( u => u.Username == username);
+    public async Task<User> Add(User user)
+    {
+        await ctx.AddAsync(user);
+        await ctx.SaveChangesAsync();
+        return user;
+    }
+
+    public async Task<User?> GetById(Guid id)
+        =>  await ctx.Users.FindAsync(id);
 }

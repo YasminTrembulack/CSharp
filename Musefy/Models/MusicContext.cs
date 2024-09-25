@@ -9,6 +9,7 @@ public class MusifyContext(DbContextOptions opt) : DbContext(opt)
     public DbSet<MusicGenre> MusicGenres { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<MusicPieces> MusicPieces { get; set; }
+    public DbSet<UploadProcess> Uploads { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Music>()
@@ -26,10 +27,7 @@ public class MusifyContext(DbContextOptions opt) : DbContext(opt)
         builder.Entity<Music>()
             .HasOne(m => m.MusicHeader)
             .WithOne()
-            .HasForeignKey<MusicPieces>("MusicHeaderId");
-                      
-        // builder.Entity<Music>()
-        //     .HasOne<MusicPieces>(mp => mp.MusicHeader)
-        //     .WithOne();
+            .HasForeignKey<MusicPieces>("MusicHeaderId")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

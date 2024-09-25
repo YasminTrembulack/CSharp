@@ -14,13 +14,17 @@ public class MusicInfoRepositoryService(MusifyContext ctx) : IMusicRepository
         return music;
     }
 
-    public async Task<Music?> GetById(Guid guid)
-        => await ctx.Musics.FindAsync(guid);
+    public async Task<Music?> GetById(Guid id)
+        => await ctx.Musics.FindAsync(id);
 
     public async Task<IEnumerable<Music>> GetMusics(int pageIndex, int pageSize)
     => await ctx.Musics
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-
+    public async Task Update(Music music)
+    {
+        ctx.Musics.Update(music);
+        await ctx.SaveChangesAsync();
+    }
 }

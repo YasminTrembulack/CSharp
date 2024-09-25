@@ -2,15 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Musify.Controllers;
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Musify.DTO;
 using Musify.Models;
 using Repositories;
 
 [ApiController]
 [Route("music")]
-public class MusicInfoController(IMusicRepository repo) : ControllerBase
+public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser) : ControllerBase
 {
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult> GetMusics(int pageIndex = 1, int pageSize = 4)
     {
         var music = await repo.GetMusics(pageIndex, pageSize);
@@ -29,8 +33,12 @@ public class MusicInfoController(IMusicRepository repo) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateMusic(MusicDTO payload)
+    [AllowAnonymous]
+    public async Task<ActionResult> CreateMusic(MusicCreatePayload payload)
     {
+        var user_id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = await repoUser.GetById(Guid.Parse("4842531C-EB82-4FC9-8953-9F2D0EE55E40"));
+
         var music = new Music
         {
             Title = payload.Title,
@@ -39,21 +47,14 @@ public class MusicInfoController(IMusicRepository repo) : ControllerBase
             Year = payload.Year,
             Lyrics = payload.Lyrics,
             Album = payload.Album,
-            User = null!,
-            Pieces = []
+            User = user!,
+            Pieces = [],
         };
-        await repo.Add(music);
+        var new_music = await repo.Add(music);
 
-        return Ok(music.Id);
+        return Ok(new MusicCreateResponse("Music created with success", new_music.Id));
     }
 
-    public record MusicDTO(
-        string Title,
-        string Artist,
-        string Duration,
-        int Year,
-        string Lyrics,
-        string Album
-    );
+    
 
 }

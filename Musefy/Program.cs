@@ -20,14 +20,18 @@ builder.Services.AddAuthentication(x =>
 })
 .AddJwtBearer(x =>
 {
-    x.RequireHttpsMetadata = false;
+     x.RequireHttpsMetadata = true;
     x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Musify.Settings.Keys.Secret)),
-        ValidateIssuer = false,
-        ValidateAudience = false
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]!)),
+
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"] 
     };
 });
 
@@ -37,7 +41,11 @@ builder.Services.AddDbContext<MusifyContext>(
 );
 
 builder.Services.AddScoped<IMusicRepository, MusicInfoRepositoryService>();
+builder.Services.AddScoped<IMusicPiecesRepository, MusicPiecesRepositoryService>();
 builder.Services.AddScoped<IUserRepository, UserReposritoryService>();
+builder.Services.AddScoped<IMusicUploadService, DefaultMusicUploadService>();
+builder.Services.AddSingleton<FileUploadRequestQueueService>();
+builder.Services.AddHostedService<UploadBackgroundService>();
 
 
 builder.Services.AddCors(options =>

@@ -10,7 +10,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<UploadMusic/>} />
-        <Route path='/music/:id' element={<MusicPlayer/>} />
+        <Route path='/music/:musicInfoId' element={<MusicPlayer/>} />
         <Route path='/up' element={<UploadMusic2/>} />
       </Routes>
     </>

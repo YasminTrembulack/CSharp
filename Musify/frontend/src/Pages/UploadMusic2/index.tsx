@@ -9,7 +9,7 @@ export default function UploadMusic2(){
     const [year, setYear] = useState<string>('');
     const [lyrics, setLyrics] = useState<string>('');
     const [album, setAlbum] = useState<string>('');
-    const [files, setFile] = useState<File | undefined | null>();
+    const [files, setFile] = useState<FormData | null>();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -25,11 +25,14 @@ export default function UploadMusic2(){
 
     if (!files) return;
 
-    const formData = new FormData();
-    formData.append('file', files); 
+    // const formData = new FormData();
+    // formData.append('file', files); 
+
+    // console.log(formData);
+    
 
     try {
-      const response = await fetch('http://localhost:5036/music-info', {
+      const response = await fetch('http://localhost:5036/music', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,19 +40,15 @@ export default function UploadMusic2(){
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      console.log('File to upload:', files);
+      // console.log('File to upload:', data);
       
-      const responseUp = await fetch(`http://localhost:5036/upload-music/${data.id}`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data; boundary=--14737809831466499882746641449'
-        }
-      });
-      const dataUp = await responseUp.json();
+      // const responseUp = await fetch(`http://localhost:5036/upload/${data.id}`, {
+      //   method: 'POST',
+      //   body: formData
+      // });
+      // const dataUp = await responseUp.json();
 
-      console.log('Resposta do music info:', data);
-      console.log('Resposta do upload:', dataUp);
+      // console.log('Resposta do upload:', dataUp);
     } catch (error) {
       console.error('Erro ao enviar dados:', error);
     }
@@ -57,7 +56,9 @@ export default function UploadMusic2(){
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null; // Verifica se files não é null
-    setFile(selectedFile);
+    console.log(selectedFile);
+    
+    // setFile(selectedFile);
   };
 
     return (

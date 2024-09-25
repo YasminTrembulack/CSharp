@@ -5,5 +5,8 @@ using Musify.Models;
 
 public interface IUserRepository
 {
-    Task<User?> Get(string username, string password);
+    Task<User?> VerifyLogin(string username, string password);
+    Task<User?> GetByUsername(string username);
+    Task<User?> GetById(Guid id);
+    Task<User> Add(User user);
 }

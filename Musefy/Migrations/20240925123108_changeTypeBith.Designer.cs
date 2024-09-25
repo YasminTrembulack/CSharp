@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Musify.Models;
 
@@ -11,9 +12,11 @@ using Musify.Models;
 namespace Musify.Migrations
 {
     [DbContext(typeof(MusifyContext))]
-    partial class MusifyContextModelSnapshot : ModelSnapshot
+    [Migration("20240925123108_changeTypeBith")]
+    partial class changeTypeBith
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>
@@ -97,7 +100,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Musics", (string)null);
+                    b.ToTable("Musics");
                 });
 
             modelBuilder.Entity("Musify.Models.MusicGenre", b =>
@@ -127,7 +130,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicGenres", (string)null);
+                    b.ToTable("MusicGenres");
                 });
 
             modelBuilder.Entity("Musify.Models.MusicPieces", b =>
@@ -163,7 +166,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicPieces", (string)null);
+                    b.ToTable("MusicPieces");
                 });
 
             modelBuilder.Entity("Musify.Models.User", b =>
@@ -198,7 +201,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>
