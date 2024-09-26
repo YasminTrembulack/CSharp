@@ -8,19 +8,24 @@ namespace Musify.Controllers;
 using Models;
 using Services;
 using Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
-[Route("upload-music")]
+[Route("upload")]
 public class UploadProcessController(IMusicUploadService uploader) : ControllerBase
 {
-    [HttpPost("{musicInfoId}")]
-    public async Task<ActionResult> CreateMusic(List<IFormFile> payloadFiles, Guid musicInfoId)
+    [HttpPost("{musicId}")]
+    [AllowAnonymous]
+    public async Task<ActionResult> UploadMusic(List<IFormFile> payloadFiles, Guid musicId)
     {
         var file = payloadFiles.FirstOrDefault();
         if (file is null)
-            return BadRequest();
+            return BadRequest("Nenhum arquivo foi enviado.");
         
-        var processId = await uploader.Upload(file, musicInfoId);
+        if (musicId == Guid.Empty)
+            return BadRequest("ID da música inválido.");
+        
+        var processId = await uploader.Upload(file, musicId);
         return Ok(processId);
     }
     

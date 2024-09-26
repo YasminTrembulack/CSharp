@@ -32,9 +32,6 @@ header {
     align-items: center;
 }
 
-form {
-    height: 60vh;
-}
 
 hls-video {
     min-width: 60vw;

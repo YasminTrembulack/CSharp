@@ -21,13 +21,29 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
     {
         using var scope = serviceProvider.CreateScope();
         var musicUploadService = scope.ServiceProvider.GetRequiredService<IMusicUploadService>();
+        var musicService = scope.ServiceProvider.GetRequiredService<IMusicRepository>();
+        var musicPieceService = scope.ServiceProvider.GetRequiredService<IMusicPiecesRepository>();
 
         var folder = request.TempFolder;
         var processUp = request.Process;
-        var MusicInfoId = request.MusicInfoId;
-        
+        var MusicId = request.MusicInfoId;
+        var music = await musicService.GetById(MusicId);
+
+        if (music == null)
+        {
+            processUp.LoadingBar = 100;
+            processUp.Finished = true;
+            processUp.Status = "Error: Music not found.";
+            await musicUploadService.UpdateProcess(processUp);
+            return;
+        }
+        System.Console.WriteLine("Folder: "+ folder);
         var filesPath = Path.Combine(folder, "music.mp3");
         var uploadPath = Path.Combine(folder, "music.m3u8");
+
+        System.Console.WriteLine("filesPath: "+ filesPath);
+        System.Console.WriteLine("uploadPath: "+ uploadPath);
+
 
         var ffmpegPath = Path.Combine(Directory.GetCurrentDirectory(), "ffmpeg.exe");
         string strCmdText = $"{ffmpegPath} -i {filesPath} -codec copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls {uploadPath}";
@@ -69,14 +85,15 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
 
         foreach (var part in parts)
         {
-            var music = new Music
+            var music_pieces = new MusicPieces
             {
-                Bytes = await File.ReadAllBytesAsync(part)
+                Bytes = await File.ReadAllBytesAsync(part),
+                Music = music
             };
-            await musicUploadService.AddMusic(music);
+            await musicPieceService.Add(music_pieces);
 
             var fileName = Path.GetFileName(part);
-            dict.Add(fileName, music.Id);
+            dict.Add(fileName, music_pieces.Id);
         }
 
         processUp.LoadingBar = 80;
@@ -105,22 +122,22 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
         processUp.LoadingBar = 95;
         await musicUploadService.UpdateProcess(processUp);
 
-        var contentHeader = new Music
+        var contentHeader = new MusicPieces
         {
-            Bytes = Encoding.UTF8.GetBytes(processedHeader)
+            Bytes = Encoding.UTF8.GetBytes(processedHeader),
+            Music = music
         };
         
-        Directory.Delete(folder, true);
+        // Directory.Delete(folder, true);
 
         processUp.LoadingBar = 100;
         processUp.Finished = true;
         processUp.Status = "Finished";
-        var headerId = await musicUploadService.AddMusic(contentHeader);
-        Console.WriteLine("headerId: " + headerId.ToString());
+        var newHeader = await musicPieceService.Add(contentHeader);
+        Console.WriteLine("headerId: " + header.ToString());
 
-        var musicInfoUploadService = scope.ServiceProvider.GetRequiredService<IMusicInfoRepository>();
-
-        await musicInfoUploadService.UpdateMusicHeader(MusicInfoId, headerId);
+        music.MusicHeaderId = newHeader.Id;
+        await musicService.Update(music);
         await musicUploadService.UpdateProcess(processUp);
         return;
     }

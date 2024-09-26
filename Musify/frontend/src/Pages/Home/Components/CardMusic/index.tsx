@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { NotiBorderGlow, Notification, NotificationBody, NotificationImage, NotificationTitle, NotiGlow } from "./styles";
 
 interface User {
