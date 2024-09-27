@@ -24,6 +24,7 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     }
 
     function Pause() {
+        
     }
    
     return (

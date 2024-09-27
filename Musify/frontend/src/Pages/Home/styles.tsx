@@ -14,4 +14,5 @@ export const MusicsContainer = styled.div`
     flex-direction: column;
     height: 100vh;
     width: 80%;
+    gap: 20px;
 `;

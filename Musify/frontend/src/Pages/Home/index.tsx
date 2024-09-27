@@ -1,29 +1,43 @@
-import { useEffect } from 'react';
-import MusicTemp from '../../Temp/musics.json'
-import CardMusic from './Components/CardMusic'
+import { useContext, useEffect } from 'react';
 import { MainContainer, MusicsContainer } from './styles';
+import { MusicContext } from '../../Context/MusicContext';
+import CardMusic from './Components/CardMusic'
+import { getHeaders } from '../../Service/headers';
+import { api } from '../../Service/api';
+// import MusicTemp from '../../Temp/musics.json'
 
 export default function Home()
 {
+    const { allMusics,setMusics } = useContext(MusicContext)
+
     useEffect(() => {
-        getMusics();
+        fetchMusics(1, 10);
     }, []);
-    function getMusics(){
-        return MusicTemp.data.map( m =>
-            <CardMusic key={m.album+m.title} musicData={m}/>
-        )
+
+
+    async function fetchMusics(index: number, size: number) {
+        const response = await api.get('/music',{
+            params:{
+                pageIndex: index,
+                pageSize: size
+            },
+            headers: getHeaders()
+        }); 
+        setMusics(response.data);
     }
 
-
-
+    function getMusics(){
+        if (allMusics) 
+            return allMusics.map( m =>
+                <CardMusic key={m.id} musicData={m}/>
+            )
+    }
 
     return (
         <MainContainer>
             <MusicsContainer>
-
                 {getMusics()}
             </MusicsContainer>
-        
         </MainContainer>
     )
 }

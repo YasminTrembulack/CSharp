@@ -1,22 +1,50 @@
 import { FormContainer, Title, Forms, ImpuGroup, Forgot, BtnSign, Signup } from "./styles";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../../../../Service/api";
+import { toast } from 'react-toastify';
 
 export default function Form() {
+  const [login, setLogin] = useState<string>('');
+  const [password, setPass] = useState<string>('');
+  const navigate = useNavigate();
+
+  async function handleSubmit(e: { preventDefault: () => void; }) {
+    e.preventDefault();
+    
+    const payload = {
+      username: login,
+      password: password,
+    };
+
+    try {
+      const response = await api.post('/auth/login', payload);
+      
+      sessionStorage.setItem('@TOKEN', response.data.token);
+      navigate('/home');
+      toast.success('Logged in successfully')
+        
+    } catch (err) {   
+      toast.error("Username or Password don't match")
+    }
+  }
+
   return (
       <FormContainer>
         <Title>Login</Title>
-        <Forms>
+        <Forms onSubmit={handleSubmit}>
           <ImpuGroup >
             <label htmlFor="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="" />
+            <input onChange={(e) => setLogin(e.target.value)} type="text" name="username" id="username" placeholder="" />
           </ImpuGroup>
           <ImpuGroup>
             <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="" />
+            <input onChange={(e) => setPass(e.target.value)} type="password" name="password" id="password" placeholder="" />
             <Forgot className="forgot">
               <a rel="noopener noreferrer" href="#"> Forgot Password ? </a>
             </Forgot>
           </ImpuGroup>
-          <BtnSign className="sign">Sign in</BtnSign>
+          <BtnSign type='submit' className="sign">Sign in</BtnSign>
         </Forms>
         <Signup className="">
           Don&apos;t have an account?

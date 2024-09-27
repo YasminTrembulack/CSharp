@@ -5,9 +5,7 @@ export default function Login()
 {
     return (
         <MainContainer>
-        
-            <Form></Form>
-        
+            <Form/>  
         </MainContainer>
     )
 }

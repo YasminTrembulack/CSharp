@@ -11,21 +11,17 @@ export const Note = styled.div`
   width: 75%;
 `;
 
-export const NotificationImage = styled.img`
-  width: 3rem;  // Ajuste o tamanho conforme necessário
-  height: 3rem; // Ajuste o tamanho conforme necessário
-  border-radius: 50%; // Se você quiser que a imagem seja redonda
-  margin-right: 1rem; // Espaçamento entre a imagem e o texto
-`;
 
 
 export const Notification = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: end;
+  align-items: center;
   isolation: isolate;
   position: relative;
-  width: 18rem;
-  height: 8rem;
+  width: 20rem;
+  height: 6.8rem;
   background: rgba(17, 24, 39, 1);
   border-radius: 1rem;
   overflow: hidden;
@@ -59,9 +55,52 @@ export const Notification = styled.div`
   }
 `;
 
+
+export const NotificationContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  height: 6rem;
+  width: 14rem;
+`;
+
+export const NotificationBodyContent = styled.div`
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  width: 14rem;
+`;
+
+export const NotificationImage = styled.img`
+  width: 3rem;  // Ajuste o tamanho conforme necessário
+  height: 3rem; // Ajuste o tamanho conforme necessário
+  border-radius: 50%; // Se você quiser que a imagem seja redonda
+  margin-right: 1rem; // Espaçamento entre a imagem e o texto
+  z-index: 4;
+  transition: transform 300ms ease;
+
+
+  ${Notification}:hover & {
+    transform: translateX(0.15rem);
+  }
+`;
+
+export const Line = styled.div`
+  width: 1px;  // Ajuste o tamanho conforme necessário
+  height: 4.5rem; // Ajuste o tamanho conforme necessário
+  z-index: 4;
+  transition: transform 300ms ease;
+  background-color: #242b3b;
+
+  ${Notification}:hover & {
+    transform: translateX(0.15rem);
+  }
+`;
+
 export const NotificationTitle = styled.div`
   color: var(--color);
-  padding: 0.65rem 0.25rem 0.4rem 1.25rem;
+  padding: 0rem 0.25rem 0.4rem 1.25rem;
   font-weight: 500;
   font-size: 1.1rem;
   transition: transform 300ms ease;

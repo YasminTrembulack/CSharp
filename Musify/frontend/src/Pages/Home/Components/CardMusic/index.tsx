@@ -1,40 +1,22 @@
-import { NotiBorderGlow, Notification, NotificationBody, NotificationImage, NotificationTitle, NotiGlow } from "./styles";
+import { Line, NotiBorderGlow, Notification, NotificationBody, NotificationBodyContent, NotificationContent, NotificationImage, NotificationTitle, NotiGlow } from "./styles";
+import IMusic from "../../../../Types/music";
 
-interface User {
-    id: string;
-    username: string;
-    email: string;
-}
-
-interface MusicHeader {
-    id: string;
-    name: string;
-    description: string;
-}
-
-interface Music {
-    title: string;
-    artist: string;
-    duration: string; // formato: "MM:SS"
-    year: number;
-    lyrics: string;
-    album: string;
-    user: User;
-    musicHeaderId: string;
-    musicHeader: MusicHeader;
-}
-
-
-export default function CardMusic({ musicData } : { musicData : Music}){
+export default function CardMusic({ musicData } : { musicData : IMusic}){
   return (
-    <Notification>
+    <Notification >
     <NotiBorderGlow />
     <NotiGlow />
-    <NotificationImage src="" alt={`${musicData.title} Cover`} />
-    <div style={{zIndex: 8}}>
+
+    <NotificationImage src="play-button.png" alt="play-button.png" />
+    <Line></Line>
+    <NotificationContent>
       <NotificationTitle>{musicData.title}</NotificationTitle>
       <NotificationBody>{musicData.artist}</NotificationBody>
-    </div>
+      <NotificationBodyContent style={{display: "flex"}}>
+        <NotificationBody>{musicData.year}</NotificationBody>
+        <NotificationBody>{musicData.duration}</NotificationBody>
+      </NotificationBodyContent>
+    </NotificationContent>
   </Notification>
 
   );
