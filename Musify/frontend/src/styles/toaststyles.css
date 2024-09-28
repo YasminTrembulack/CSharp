@@ -1,8 +1,8 @@
 .Toastify__toast {
-    background-color: rgba(17, 24, 39, 1); /* Your desired background color */
+    background-color: rgba(17, 24, 39, 1) !important; /* Your desired background color */
     color: white; /* Adjust text color if necessary */
 }
 
 .Toastify__toast-container {
-    width: 400px; /* Defina a largura desejada */
+    width: auto !important; 
 }

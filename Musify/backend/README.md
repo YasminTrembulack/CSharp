@@ -6,9 +6,11 @@ https://gist.github.com/lukebussey/4d27678c72580aeb660c19a6fb73e9ee
 https://medium.com/@mohanedzekry/clean-architecture-in-asp-net-core-web-api-d44e33893e1d
 
 dotnet new webapi
-dotnet add package  Microsoft.EntityFrameworkCore.SqlServer
-.    .   .   .   .  Microsoft.EntityFrameworkCore.InMemory 
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add packag Microsoft.EntityFrameworkCore.InMemory 
+dotnet add package Pomelo.EntityFrameworkCore.MySql
 
+dotnet tool install --global dotnet-ef
 
 dotnet ef migrations add InitialModel      
 dotnet ef migrations remove

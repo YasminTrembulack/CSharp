@@ -10,11 +10,17 @@ import '../src/Styles/toaststyles.css';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { MusicProvider } from "./Context/MusicContext";
+import { UserContext, UserProvider } from "./Context/UserContext";
+import { useContext } from "react";
+import NavBar from "./Components/NavBar";
 
 function App() {
  
+  const { curentUser } = useContext(UserContext);
   return (
+    <UserProvider>
     <MusicProvider> 
+      {curentUser !== null && <NavBar/>}
       <Routes>
         <Route path='/' element={<Login/>} />
         <Route path='/home' element={<Home/>} />
@@ -35,6 +41,7 @@ function App() {
         theme="dark"
       />
     </MusicProvider>
+    </UserProvider>
   )
 }
 

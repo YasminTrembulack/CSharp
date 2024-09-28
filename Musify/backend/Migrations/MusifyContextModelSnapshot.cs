@@ -18,9 +18,10 @@ namespace Musify.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Musify.Models.Genre", b =>
                 {
@@ -46,7 +47,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>
@@ -97,7 +98,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Musics");
+                    b.ToTable("Musics", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.MusicGenre", b =>
@@ -127,7 +128,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicGenres");
+                    b.ToTable("MusicGenres", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.MusicPieces", b =>
@@ -163,7 +164,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicPieces");
+                    b.ToTable("MusicPieces", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.UploadProcess", b =>
@@ -172,7 +173,7 @@ namespace Musify.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Finished")
+                    b.Property<ulong>("Finished")
                         .HasColumnType("bit");
 
                     b.Property<int>("LoadingBar")
@@ -184,7 +185,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Uploads");
+                    b.ToTable("Uploads", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.User", b =>
@@ -219,7 +220,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>

@@ -1,13 +1,15 @@
 import { FormContainer, Title, Forms, ImpuGroup, Forgot, BtnSign, Signup } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { api } from "../../../../Service/api";
 import { toast } from 'react-toastify';
+import { UserContext } from "../../../../Context/UserContext";
 
 export default function Form() {
   const [login, setLogin] = useState<string>('');
   const [password, setPass] = useState<string>('');
   const navigate = useNavigate();
+  const { Login } = useContext(UserContext);
 
   async function handleSubmit(e: { preventDefault: () => void; }) {
     e.preventDefault();
@@ -19,8 +21,10 @@ export default function Form() {
 
     try {
       const response = await api.post('/auth/login', payload);
-      
-      sessionStorage.setItem('@TOKEN', response.data.token);
+      const token = response.data.token;
+      const user = response.data.user;
+
+      Login(user, token);
       navigate('/home');
       toast.success('Logged in successfully')
         
