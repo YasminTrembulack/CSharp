@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import UploadMusic from '../src/Pages/UploadMusic'
 import MusicPlayer from "./Pages/MusicPlayer";
 import UploadMusic2 from "./Pages/UploadMusic2";
@@ -10,17 +10,18 @@ import '../src/Styles/toaststyles.css';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { MusicProvider } from "./Context/MusicContext";
-import { UserContext, UserProvider } from "./Context/UserContext";
-import { useContext } from "react";
+import { UserProvider } from "./Context/UserContext";
 import NavBar from "./Components/NavBar";
 
 function App() {
  
-  const { curentUser } = useContext(UserContext);
+  const location = useLocation(); 
+  const isLoginPage = location.pathname === '/';
+  
   return (
     <UserProvider>
     <MusicProvider> 
-      {curentUser !== null && <NavBar/>}
+      {!isLoginPage && <NavBar/>}
       <Routes>
         <Route path='/' element={<Login/>} />
         <Route path='/home' element={<Home/>} />
