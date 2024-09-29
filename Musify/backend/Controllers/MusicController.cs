@@ -44,7 +44,7 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
         {
             Title = payload.Title,
             Artist = payload.Artist,
-            Duration = payload.Duration,
+            Duration = "",
             Year = payload.Year,
             Lyrics = payload.Lyrics,
             Album = payload.Album,

@@ -14,4 +14,22 @@ export const MusicsContainer = styled.div`
     height: 94vh;
     width: 80%;
     gap: 20px;
+    padding: 50px;
+`;
+
+export const AsideRight = styled.div`
+    display: flex;
+    justify-content: right;
+    align-items:end;
+    height: 94vh;
+    width: 10%;
+    padding: 30px;
+`;
+
+export const AsideLeft = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items:end;
+    height: 94vh;
+    width: 10%;
 `;

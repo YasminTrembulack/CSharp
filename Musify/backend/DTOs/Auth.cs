@@ -8,7 +8,6 @@ public record LoginPayload
 
 public record LoginResponse
 (
-    UserResponse User,
     string Token
 );
 

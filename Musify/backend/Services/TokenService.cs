@@ -18,6 +18,7 @@ public static class TokenService
             [   
                 new Claim("Id", user.Id.ToString()),
                 new Claim("Username", user.Username.ToString()),
+                new Claim("FullName", user.FullName.ToString()),
                 new Claim("Role", user.Role.ToString()),
                 new Claim("BirthDate", user.BirthDate.ToString("dd-MM-yyyy"))
             ]),

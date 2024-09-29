@@ -26,9 +26,7 @@ public class AuthController(IUserRepository repo, IConfiguration configuration) 
 
         var token = TokenService.GenerateToken(user, configuration);
 
-        var user_data = new UserResponse(user.Id, user.Username, user.BirthDate, user.Role);
-
-        return Ok(new LoginResponse(user_data,token));
+        return Ok(new LoginResponse(token));
     }
 
     [HttpPost("register")]
@@ -47,6 +45,7 @@ public class AuthController(IUserRepository repo, IConfiguration configuration) 
         var user = new User
         {
             Username = payload.Username,
+            FullName = payload.FullName,
             Password = payload.Password,
             BirthDate = birth,
             Role = payload.Role

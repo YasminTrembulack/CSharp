@@ -136,7 +136,11 @@ public class UploadBackgroundService(FileUploadRequestQueueService service, ISer
         var newHeader = await musicPieceService.Add(contentHeader);
         Console.WriteLine("headerId: " + header.ToString());
 
-        music.MusicHeaderId = newHeader.Id;
+        var tfile = TagLib.File.Create(filesPath);
+        TimeSpan duration = tfile.Properties.Duration;
+        System.Console.WriteLine(duration);
+
+        music.MusicHeaderId = newHeader?.Id;
         await musicService.Update(music);
         await musicUploadService.UpdateProcess(processUp);
         return;

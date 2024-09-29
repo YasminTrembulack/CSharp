@@ -1,9 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { MainContainer, MusicsContainer } from './styles';
+import { AsideLeft, AsideRight, MainContainer, MusicsContainer } from './styles';
 import { MusicContext } from '../../Context/MusicContext';
 import CardMusic from './Components/CardMusic'
 import { getHeaders } from '../../Service/headers';
 import { api } from '../../Service/api';
+import AddMusicButton from './Components/AddMusicButton';
 // import MusicTemp from '../../Temp/musics.json'
 
 export default function Home()
@@ -35,9 +36,14 @@ export default function Home()
 
     return (
         <MainContainer>
+            <AsideLeft>
+            </AsideLeft>
             <MusicsContainer>
                 {getMusics()}
             </MusicsContainer>
+            <AsideRight>
+                <AddMusicButton/>
+            </AsideRight>
         </MainContainer>
     )
 }

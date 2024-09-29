@@ -4,7 +4,6 @@ public record MusicCreatePayload
 (
     string Title,
     string Artist,
-    string Duration,
     int Year,
     string Lyrics,
     string Album

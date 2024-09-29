@@ -8,6 +8,7 @@ public record CreateUserResponde
 public record UserDTO
 (
     string Username,
+    string FullName,
     string Password,
     string BirthDate,
     string Role

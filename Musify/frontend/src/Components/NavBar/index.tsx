@@ -1,5 +1,7 @@
 import ProfileAvatar from "../ProfileAvatar";
-import { Header, GradientLine, HeaderContent } from "./styles";
+import SelectLanguage from "../SelectLanguage";
+import ThemeButton from "../ThemeButton";
+import { Header, GradientLine, HeaderContent, Title, RightContent } from "./styles";
 
 
 export default function NavBar(){
@@ -8,7 +10,12 @@ export default function NavBar(){
         <Header>
             <GradientLine/>
             <HeaderContent>
-                <ProfileAvatar/>
+                <Title>Musify</Title>
+                <RightContent>
+                    <ThemeButton/>
+                    <SelectLanguage/>
+                    <ProfileAvatar/>
+                </RightContent>
             </HeaderContent>
         </Header>
     )

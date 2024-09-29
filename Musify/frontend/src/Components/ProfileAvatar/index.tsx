@@ -1,14 +1,14 @@
 import { UserContext } from "../../Context/UserContext";
-import { useContext } from "react";
-import { Avatar, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Avatar, ListItemIcon, Menu, MenuItem, Skeleton } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import React from "react";
 import { Logout } from "@mui/icons-material";
+import { indigo } from "@mui/material/colors";
 
 export default function ProfileAvatar(){
 
   const { currentUser, userLogout } = useContext(UserContext);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   
   const open = Boolean(anchorEl);
 
@@ -43,18 +43,7 @@ export default function ProfileAvatar(){
     return color;
   }
     
-  function stringAvatar(name: string | undefined) {
-    console.log("stringAvatar: " + JSON.stringify(currentUser));
-    
-    if (!name) {
-      return {
-        sx: {
-          bgcolor: '#ccc', // Cor padrão se não houver nome
-        },
-        children: '?', // Usar um caractere de fallback
-      };
-    }
-
+  function stringAvatar(name: string ) {
     return {
       sx: {
       bgcolor: stringToColor(name),
@@ -65,12 +54,16 @@ export default function ProfileAvatar(){
 
   return(
     <>
-      <Avatar onClick={handleClick} {...stringAvatar(currentUser?.Username)}/>
+      {currentUser 
+      ? <Avatar onClick={handleClick} {...stringAvatar(currentUser.Username)}/>
+      : <Skeleton sx={{ bgcolor: 'grey.500' }} variant="circular" width={40} height={40} />
+      }
       <Menu
         sx={{
           '& .MuiPaper-root': {
             backgroundColor: '#111827', // Muda a cor de fundo
-            color: 'white',             // Muda a cor do texto
+            color: 'white',
+            marginTop: '10px'            // Muda a cor do texto
           },
         }}
         id="basic-menu"
@@ -83,13 +76,13 @@ export default function ProfileAvatar(){
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PersonIcon color="secondary" fontSize="small" />
+            <PersonIcon  sx={{ color: indigo[50] }} fontSize="small" />
           </ListItemIcon>
           Profile
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
-            <Logout color="secondary" fontSize="small" />
+            <Logout  sx={{ color: indigo[50] }} fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
