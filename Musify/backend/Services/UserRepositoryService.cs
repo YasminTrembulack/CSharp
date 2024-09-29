@@ -7,7 +7,6 @@ public class UserReposritoryService(MusifyContext ctx) : IUserRepository
     public async Task<User?> VerifyLogin(string username, string password)
     {   
         var users = await ctx.Users.ToListAsync();
-        System.Console.WriteLine(users);
         return users.Where(x => x.Username.ToLower().Equals(username.ToLower()) && x.Password.Equals(password)).FirstOrDefault();
     }
 

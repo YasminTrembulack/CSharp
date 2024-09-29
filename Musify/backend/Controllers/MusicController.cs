@@ -36,7 +36,8 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
     [AllowAnonymous]
     public async Task<ActionResult> CreateMusic(MusicCreatePayload payload)
     {
-        var user_id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user_id = User.FindFirst("Id")?.Value;
+        
         var user = await repoUser.GetById(Guid.Parse("29c5125f-46e7-4ead-9210-55d1c0c70870"));
 
         var music = new Music

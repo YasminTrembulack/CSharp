@@ -1,6 +1,6 @@
 export default interface IUser {
-    id: string;
-    username: string;
-    birthDate: string;
-    role: string
+    Id: string;
+    Username: string;
+    Role: string;
+    BirtDate: string;
 }

@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { api } from "../../../../Service/api";
 import { toast } from 'react-toastify';
 import { UserContext } from "../../../../Context/UserContext";
-import IUser from "../../../../Types/user";
 
 export default function Form() {
   const [login, setLogin] = useState<string>('');

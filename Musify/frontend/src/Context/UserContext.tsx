@@ -1,10 +1,10 @@
-import { useState, createContext, ReactNode } from 'react';
+import { useState, createContext, ReactNode, useEffect } from 'react';
 import IUser from '../Types/user';
 import { jwtDecode } from 'jwt-decode';
 
 interface IUserContext {
-    curentUser: IUser | null;
-    Logout: () => void;
+    currentUser: IUser | null;
+    userLogout: () => void;
     Login: (token: string) => void
 }
 
@@ -12,39 +12,38 @@ export const UserContext = createContext({} as IUserContext);
 UserContext.displayName = 'UserContext';
 
 export const UserProvider = ({ children } : { children: ReactNode }) => {
-    const [curentUser, setCurentUser] = useState<IUser | null>(null);
+    const [currentUser, setCurrentUser] = useState<IUser | null>(null);
     
+    useEffect(() => {
+        const token = sessionStorage.getItem('@TOKEN');
+        if (token) {
+          try {
+            const decodedUser = jwtDecode<IUser>(token);
+            setCurrentUser(decodedUser);
+          } catch (error) {
+            console.error("Erro ao decodificar o token: ", error);
+            userLogout();
+          }
+        }
+    }, []); 
+
     function Login(token: string) {
         sessionStorage.setItem('@TOKEN', token);
-
-        const jwtData = jwtDecode(token);
-        console.log(jwtData.aud);
-        console.log(jwtData.exp);
-        console.log(jwtData.iat);
-        console.log(jwtData.iss);
-        console.log(jwtData.jti);
-        console.log(jwtData.nbf);
-        console.log(jwtData.sub);
-
-        // const userData = {
-        //     id: jwtData.
-        // }
-        
-        // setCurentUser(user);
-        // console.log("userContext: " + JSON.stringify(user));
+        const decodedUser = jwtDecode<IUser>(token);
+        setCurrentUser(decodedUser);
     }
 
-    function Logout() {
-        sessionStorage.clear();
-        setCurentUser(null);
+    function userLogout() {
+        sessionStorage.removeItem('@TOKEN');
+        setCurrentUser(null);
     }
    
     return (
         <UserContext.Provider
             value={{
-                curentUser,
+                currentUser,
                 Login,
-                Logout
+                userLogout
             }}
         >
             {children}

@@ -8,7 +8,7 @@ import { api } from '../../Service/api';
 
 export default function Home()
 {
-    const { allMusics,setMusics } = useContext(MusicContext);
+    const { allMusics, setMusics } = useContext(MusicContext);
 
     useEffect(() => {
         fetchMusics(1, 10);
