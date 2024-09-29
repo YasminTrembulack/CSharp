@@ -7,7 +7,8 @@ interface IMusicContext {
     playing: boolean
     Play: (item : IMusic) => void;
     Pause: () => void;
-    setMusics: (music: IMusic[]) => void
+    setMusics: (music: IMusic[]) => void;
+    ClosePlayer: () => void;
 }
 
 export const MusicContext = createContext({} as IMusicContext);
@@ -24,7 +25,12 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     }
 
     function Pause() {
-        
+        setPlaying(false);
+    }
+
+    function ClosePlayer() {
+        setMusics(null);
+        setCurrentMusic(null);
     }
    
     return (
@@ -35,7 +41,8 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
                 setMusics,
                 playing,
                 Play,
-                Pause
+                Pause,
+                ClosePlayer
             }}
         >
             {children}

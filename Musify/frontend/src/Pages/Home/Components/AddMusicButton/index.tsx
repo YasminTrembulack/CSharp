@@ -15,7 +15,6 @@ export default function AddMusicButton(){
     const [lyrics, setLyrics] = useState<string>('');
     const [fileInput, setFile] = useState<File | null>();
 
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

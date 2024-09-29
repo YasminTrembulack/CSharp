@@ -9,7 +9,7 @@ export const Header = styled.div`
 
 export const GradientLine = styled.div`
     background: linear-gradient(to left, #2eadff, #3d83ff,#7961ff, #8528ff);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     height: 7px;
 `;
 

@@ -1,9 +1,18 @@
 import { Line, NotiBorderGlow, Notification, NotificationBody, NotificationBodyContent, NotificationContent, NotificationImage, NotificationTitle, NotiGlow } from "./styles";
 import IMusic from "../../../../Types/music";
+import { MusicContext } from "../../../../Context/MusicContext";
+import { useContext } from "react";
 
 export default function CardMusic({ musicData } : { musicData : IMusic}){
+
+  const { Play } = useContext(MusicContext);
+
+  function handlePlayMusic(){
+    Play(musicData);
+  }
+
   return (
-    <Notification >
+    <Notification onClick={handlePlayMusic}>
     <NotiBorderGlow />
     <NotiGlow />
 

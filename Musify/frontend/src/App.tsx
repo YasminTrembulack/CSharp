@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import UploadMusic from '../src/Pages/UploadMusic'
-import MusicPlayer from "./Pages/MusicPlayer";
+import MusicPlayer from "./Components/MusicPlayer";
 import UploadMusic2 from "./Pages/UploadMusic2";
 import './App.css'
 import Login from "./Pages/Login";
@@ -29,6 +29,7 @@ function App() {
         <Route path='/music/:id' element={<MusicPlayer/>} />
         <Route path='/up' element={<UploadMusic2/>} />
       </Routes>
+      <MusicPlayer/>
       <ToastContainer
         position="top-right"
         autoClose={3000}

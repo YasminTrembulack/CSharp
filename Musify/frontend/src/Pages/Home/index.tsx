@@ -5,11 +5,13 @@ import CardMusic from './Components/CardMusic'
 import { getHeaders } from '../../Service/headers';
 import { api } from '../../Service/api';
 import AddMusicButton from './Components/AddMusicButton';
+import { UserContext } from '../../Context/UserContext';
 // import MusicTemp from '../../Temp/musics.json'
 
 export default function Home()
 {
     const { allMusics, setMusics } = useContext(MusicContext);
+    const { currentUser } = useContext(UserContext);
 
     useEffect(() => {
         fetchMusics(1, 10);
@@ -42,7 +44,7 @@ export default function Home()
                 {getMusics()}
             </MusicsContainer>
             <AsideRight>
-                <AddMusicButton/>
+                { currentUser?.Role === 'ADM' && <AddMusicButton/> }
             </AsideRight>
         </MainContainer>
     )
