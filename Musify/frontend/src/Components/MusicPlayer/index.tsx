@@ -7,20 +7,34 @@ import SliderBuffer from './Components/SliderBuffer';
 import SliderProgress from './Components/SliderProgress';
 import PlayButton from './Components/PlayButton';
 
-export default function AudioLine() {
+export default function MusicPlayer() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { currentMusic } = useContext(MusicContext);
+  const { currentMusic, playing } = useContext(MusicContext);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [bufferedTime, setBufferedTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
 
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (currentMusic) {
+        sessionStorage.setItem('@MUSIC', JSON.stringify(currentMusic));
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [currentMusic]);
+
   useEffect(() => {
     let hls: Hls | null = null;
     
     if (videoRef.current && currentMusic?.musicHeaderId !== null) {
-      const lastTime = sessionStorage.getItem("@MUSICTIME");
       const url = `http://localhost:5036/audio/${currentMusic?.musicHeaderId}`;
 
       if (Hls.isSupported()) {
@@ -29,34 +43,37 @@ export default function AudioLine() {
         hls.attachMedia(videoRef.current);
 
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          if (lastTime) {
-            videoRef.current!.currentTime = Number(lastTime); 
+          
+          if (currentMusic) {
+            videoRef.current!.currentTime = currentMusic.currentTime; 
           }
-          videoRef.current?.play();
+          if (playing) {
+            videoRef.current?.play();
+          }
         });
-      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl') && currentMusic) {
         videoRef.current.src = url;
         videoRef.current.addEventListener('loadedmetadata', () => {
-          if (lastTime) {
-            videoRef.current!.currentTime = Number(lastTime);
+          videoRef.current!.currentTime = currentMusic?.currentTime;
+          if (playing) {
+            videoRef.current?.play();
           }
-          // videoRef.current?.play();
         });
       }
 
       const handleTimeUpdate = () => {
         if (!isSeeking) {
           setCurrentTime(videoRef.current?.currentTime || 0);
-          sessionStorage.setItem("@MUSICTIME", videoRef.current?.currentTime.toString() || '0');
+          if (currentMusic) {
+            currentMusic.currentTime = videoRef.current?.currentTime || 0;
+          }
         }
       };
 
       const handleProgress = () => {
-        if (videoRef.current) {
-          const buffered = videoRef.current.buffered;
-          const currentBuffer = buffered.length > 0 ? buffered.end(buffered.length - 1) : 0;
-          setBufferedTime(currentBuffer);
-        }
+        const buffered = videoRef.current?.buffered;
+        const currentBuffer = buffered && buffered.length > 0 ? buffered.end(buffered.length - 1) : 0;
+        setBufferedTime(currentBuffer);
       };
 
       const handleLoadedMetadata = () => {
@@ -68,17 +85,25 @@ export default function AudioLine() {
       videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
 
       return () => {
-        if (hls) {
-          hls.destroy();
-        }
-        if (videoRef.current) {
-          videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-          videoRef.current.removeEventListener('progress', handleProgress);
-          videoRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        }
+        if (hls) hls.destroy();
+        videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+        videoRef.current?.removeEventListener('progress', handleProgress);
+        videoRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata);
       };
     }
-  }, [currentMusic, isSeeking ]);
+  }, [currentMusic]);
+
+  // Effect to control play/pause based on 'playing' state
+  useEffect(() => {
+    
+    if (videoRef.current) {
+      if (playing) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [playing]);
 
   const handleSliderChange = (_event: Event, value: number | number[]) => {
     const newTime = value as number;
@@ -95,11 +120,10 @@ export default function AudioLine() {
     setIsSeeking(false);
   };
 
-
   return (
     <ContainerBar>
-      <PlayButton/>
-      <Box sx={{ width: '400px', position: 'relative'}}>
+      <PlayButton />
+      <Box sx={{ width: '400px', position: 'relative' }}>
         <Music ref={videoRef} controls />
         <SliderBuffer bufferedTime={bufferedTime} duration={duration} />
         <SliderProgress handleSliderCommitted={handleSliderCommitted} currentTime={currentTime} duration={duration} handleSliderChange={handleSliderChange} />

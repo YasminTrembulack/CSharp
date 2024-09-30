@@ -22,16 +22,22 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     const [playing, setPlaying] = useState<boolean>(false);
     
     function ChangeMusic(music: IMusic) {
+        music.currentTime = 0;
         setCurrentMusic(music);
         setPlaying(true);
-        sessionStorage.setItem("@MUSIC", JSON.stringify(music));
-        sessionStorage.setItem("@MUSICTIME", '0');
     }
 
+    // Recupera a música da sessão ao carregar a página
     useEffect(() => {
         const lastMusic = sessionStorage.getItem("@MUSIC");
+        console.log(lastMusic);
+
         if (lastMusic) {
-            setCurrentMusic(JSON.parse(lastMusic));
+            try {
+                setCurrentMusic(JSON.parse(lastMusic));
+            } catch (error) {
+                console.error("Erro ao carregar música do sessionStorage", error);
+            }
         }
     }, []);
 
@@ -47,17 +53,19 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
         setCurrentMusic(null);
     }
 
-    const updateMusics = (musicResponse: any) => {
-        if (allMusics.length === 0) {
-            setMusics(musicResponse);
-        } else if (allMusics.length < 10) {
-            setMusics(prev => {
-                const newMusic = Array.isArray(musicResponse) 
-                    ? musicResponse 
-                    : [musicResponse];
-                return [...prev, ...newMusic]; 
-            });
-        }
+    const updateMusics = (musicResponse: IMusic | IMusic[]) => {
+        setMusics((prev) => {
+            const newMusicArray = Array.isArray(musicResponse) 
+                ? musicResponse 
+                : [musicResponse];
+
+            // Evita duplicações
+            const filteredMusic = newMusicArray.filter((newMusic) =>
+                !prev.some((music) => music.id === newMusic.id)
+            );
+
+            return [...prev, ...filteredMusic];
+        });
     };
    
     return (

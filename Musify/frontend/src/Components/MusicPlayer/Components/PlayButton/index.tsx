@@ -12,7 +12,7 @@ export default function PlayButton(){
             Pause()
         }
         else{
-            Play
+            Play()
         }
     }
     return(
