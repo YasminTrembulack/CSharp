@@ -9,8 +9,10 @@ export const MainContainer = styled.div`
 `;
 
 export const MusicsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+    
     height: 94vh;
     width: 80%;
     gap: 20px;

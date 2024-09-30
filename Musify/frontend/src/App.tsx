@@ -29,7 +29,7 @@ function App() {
         <Route path='/music/:id' element={<MusicPlayer/>} />
         <Route path='/up' element={<UploadMusic2/>} />
       </Routes>
-      <MusicPlayer/>
+       <MusicPlayer/>
       <ToastContainer
         position="top-right"
         autoClose={3000}

@@ -26,7 +26,9 @@ export default function Home()
             },
             headers: getHeaders()
         }); 
-        setMusics(response.data);
+        console.log(response.data);
+        
+        setMusics(response.data.musics);
     }
 
     function getMusics(){

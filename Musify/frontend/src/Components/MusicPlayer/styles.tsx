@@ -7,10 +7,15 @@ export const Music = styled.video`
     background-color: rgba(17, 24, 39, 1);
 `;
 
-export const Container = styled.div`
+export const ContainerBar = styled.div`
     position: absolute;
-    bottom: 50px;
-    width: 500px;
-    height: 200px;
-    color: white
+    bottom: 0px;
+    right: calc(50% - 250px) ;
+    width: 800px;
+    height: 50px;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #333333
 `;

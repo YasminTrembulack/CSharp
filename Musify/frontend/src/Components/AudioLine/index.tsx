@@ -1,11 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { MusicContext } from '../../Context/MusicContext';
-import { ContainerBar, Music } from './styles';
+import { Music } from './styles';
 import Hls from 'hls.js';
 import { Box } from '@mui/material';
 import SliderBuffer from './Components/SliderBuffer';
 import SliderProgress from './Components/SliderProgress';
-import PlayButton from './Components/PlayButton';
 
 export default function AudioLine() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -18,6 +17,7 @@ export default function AudioLine() {
 
   useEffect(() => {
     let hls: Hls | null = null;
+    console.log(currentMusic);
     
     if (videoRef.current && currentMusic?.musicHeaderId !== null) {
       const lastTime = sessionStorage.getItem("@MUSICTIME");
@@ -32,7 +32,7 @@ export default function AudioLine() {
           if (lastTime) {
             videoRef.current!.currentTime = Number(lastTime); 
           }
-          videoRef.current?.play();
+          // videoRef.current?.play();
         });
       } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
         videoRef.current.src = url;
@@ -97,13 +97,10 @@ export default function AudioLine() {
 
 
   return (
-    <ContainerBar>
-      <PlayButton/>
-      <Box sx={{ width: '400px', position: 'relative'}}>
-        <Music ref={videoRef} controls />
-        <SliderBuffer bufferedTime={bufferedTime} duration={duration} />
-        <SliderProgress handleSliderCommitted={handleSliderCommitted} currentTime={currentTime} duration={duration} handleSliderChange={handleSliderChange} />
-      </Box>
-    </ContainerBar>
+    <Box sx={{ width: '100%'}}>
+      <Music ref={videoRef} controls />
+      <SliderBuffer bufferedTime={bufferedTime} duration={duration} />
+      <SliderProgress handleSliderCommitted={handleSliderCommitted} currentTime={currentTime} duration={duration} handleSliderChange={handleSliderChange} />
+    </Box>
   );
 }

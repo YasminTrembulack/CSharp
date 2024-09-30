@@ -5,10 +5,10 @@ import { useContext } from "react";
 
 export default function CardMusic({ musicData } : { musicData : IMusic}){
 
-  const { Play } = useContext(MusicContext);
+  const { ChangeMusic } = useContext(MusicContext);
 
   function handlePlayMusic(){
-    Play(musicData);
+    ChangeMusic(musicData);
   }
 
   return (

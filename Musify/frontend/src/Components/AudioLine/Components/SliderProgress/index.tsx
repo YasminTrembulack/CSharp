@@ -27,7 +27,7 @@ export default function SliderProgress({ currentTime, duration, handleSliderChan
       position: 'absolute',
       top: 0,
       left: 0,
-      width: '400px',
+      width: '100%',
       color: 'rgba(255, 255, 255, 1)', // Cor para o progresso da música (branco)
       height: 10,
         '& .MuiSlider-thumb': {

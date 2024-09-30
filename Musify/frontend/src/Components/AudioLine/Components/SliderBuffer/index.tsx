@@ -8,7 +8,6 @@ export default function MusicPlayer({ bufferedTime, duration } : { bufferedTime 
             min={0}
             max={duration} // Duração total
             sx={{
-                width: '400px',
                 color: 'rgba(255, 255, 255, 0.5)', // Cor para o buffer (mais clara)
                 height: 10,
                 '& .MuiSlider-thumb': {

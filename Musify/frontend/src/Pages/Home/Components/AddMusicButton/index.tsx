@@ -2,10 +2,11 @@ import { BtnSign, FormContainer, Forms, ImpuGroup, Title } from './style';
 import CircularButton from '../../../../Components/CircularButton';
 import AddIcon from '@mui/icons-material/Add';
 import { Modal } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { api } from '../../../../Service/api';
 import { getHeaders } from '../../../../Service/headers';
 import UploadComponent from '../../../../Components/UploadComponent';
+import { MusicContext } from '../../../../Context/MusicContext';
 
 export default function AddMusicButton(){
     const [title, setTitle] = useState<string>('');
@@ -18,6 +19,9 @@ export default function AddMusicButton(){
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const { updateMusics } = useContext(MusicContext);
+
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -34,7 +38,7 @@ export default function AddMusicButton(){
         const musicResponse = await api.post('/music',payload,{
             headers: getHeaders()
         }); 
-        const musicId = musicResponse.data.id; 
+        const musicId = musicResponse.data.music.id; 
 
         console.log(musicResponse.data);
 
@@ -48,7 +52,9 @@ export default function AddMusicButton(){
             },
         });
         console.log(uploadResponse.data);
-        
+
+        setOpen(false);
+        updateMusics(musicResponse.data.music);
     }
   
     return(
