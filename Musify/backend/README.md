@@ -16,7 +16,6 @@ dotnet ef migrations add InitialModel
 dotnet ef migrations remove
 dotnet ef database update   
 
-
 dotnet add package Microsoft.AspNetCore.Authentication
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 

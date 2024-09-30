@@ -22,6 +22,11 @@ public class MusicInfoRepositoryService(MusifyContext ctx) : IMusicRepository
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+    public int GetNumberMusics()
+        => ctx.Musics.Count();
+
+
     public async Task Update(Music music)
     {
         ctx.Musics.Update(music);

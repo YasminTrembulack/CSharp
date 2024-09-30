@@ -36,10 +36,10 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddDbContext<MusifyContext>(
-    // opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SQL-Server"))
+    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("SQL-Server"))
     // opt => opt.UseMySql(builder.Configuration.GetConnectionString("MySQL"),
     // new MySqlServerVersion(new Version(8, 0, 26)))
-    opt => opt.UseInMemoryDatabase("Musify")
+    // opt => opt.UseInMemoryDatabase("Musify")
 );
 
 builder.Services.AddScoped<IMusicRepository, MusicInfoRepositoryService>();

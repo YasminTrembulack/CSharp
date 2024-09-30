@@ -18,10 +18,9 @@ namespace Musify.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                .HasAnnotation("SqlServer:IdentitySeed", 1L)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Musify.Models.Genre", b =>
                 {
@@ -47,7 +46,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>
@@ -75,7 +74,6 @@ namespace Musify.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lyrics")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MusicHeaderId")
@@ -98,7 +96,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Musics", (string)null);
+                    b.ToTable("Musics");
                 });
 
             modelBuilder.Entity("Musify.Models.MusicGenre", b =>
@@ -128,7 +126,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicGenres", (string)null);
+                    b.ToTable("MusicGenres");
                 });
 
             modelBuilder.Entity("Musify.Models.MusicPieces", b =>
@@ -164,7 +162,7 @@ namespace Musify.Migrations
 
                     b.HasIndex("MusicId");
 
-                    b.ToTable("MusicPieces", (string)null);
+                    b.ToTable("MusicPieces");
                 });
 
             modelBuilder.Entity("Musify.Models.UploadProcess", b =>
@@ -173,7 +171,7 @@ namespace Musify.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<ulong>("Finished")
+                    b.Property<bool>("Finished")
                         .HasColumnType("bit");
 
                     b.Property<int>("LoadingBar")
@@ -185,7 +183,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Uploads", (string)null);
+                    b.ToTable("Uploads");
                 });
 
             modelBuilder.Entity("Musify.Models.User", b =>
@@ -202,6 +200,10 @@ namespace Musify.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -220,7 +222,7 @@ namespace Musify.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Musify.Models.Music", b =>

@@ -9,5 +9,6 @@ public interface IMusicRepository
     Task<Music?> GetById(Guid guid);
     Task<Music> Add(Music music);
     Task<IEnumerable<Music>> GetMusics(int pageIndex, int pageSize);
+    int GetNumberMusics();
     Task Update(Music music);
 }

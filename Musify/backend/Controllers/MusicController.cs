@@ -17,8 +17,9 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
     [Authorize]
     public async Task<ActionResult> GetMusics(int pageIndex = 1, int pageSize = 4)
     {
+        var numberMusics = repo.GetNumberMusics();
         var music = await repo.GetMusics(pageIndex, pageSize);
-        return Ok(music);
+        return Ok(new MusicGetResponse(music, numberMusics));
     }
 
     [HttpGet("{id}")]
@@ -37,8 +38,11 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
     public async Task<ActionResult> CreateMusic(MusicCreatePayload payload)
     {
         var user_id = User.FindFirst("Id")?.Value;
+        // Console.WriteLine("USER ID ------> "+user_id);
         
-        var user = await repoUser.GetById(Guid.Parse("29c5125f-46e7-4ead-9210-55d1c0c70870"));
+        var user = await repoUser.GetById(Guid.Parse(user_id!));
+        if (user == null)
+            return BadRequest("User not found");
 
         var music = new Music
         {
@@ -48,12 +52,12 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
             Year = payload.Year,
             Lyrics = payload.Lyrics,
             Album = payload.Album,
-            User = user!,
+            User = user,
             Pieces = [],
         };
         var new_music = await repo.Add(music);
 
-        return Ok(new MusicCreateResponse("Music created with success", new_music.Id));
+        return Ok(new MusicCreateResponse("Music created with success", MusicResponse.Build(new_music)));
     }
 
     
