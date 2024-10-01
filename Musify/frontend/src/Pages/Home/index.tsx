@@ -26,8 +26,6 @@ export default function Home()
             },
             headers: getHeaders()
         }); 
-        console.log(response.data);
-        
         setMusics(response.data.musics);
     }
 

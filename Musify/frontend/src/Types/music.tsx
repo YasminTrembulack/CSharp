@@ -15,5 +15,5 @@ export default interface IMusic {
     album: string;
     user: IUser;
     musicHeaderId: string;
-    currentTime: number;
+    musicTime: number;
 }

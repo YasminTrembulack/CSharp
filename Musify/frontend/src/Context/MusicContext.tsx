@@ -22,15 +22,14 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     const [playing, setPlaying] = useState<boolean>(false);
     
     function ChangeMusic(music: IMusic) {
-        music.currentTime = 0;
+        music.musicTime = 0;
         setCurrentMusic(music);
         setPlaying(true);
     }
 
-    // Recupera a música da sessão ao carregar a página
     useEffect(() => {
         const lastMusic = sessionStorage.getItem("@MUSIC");
-        console.log(lastMusic);
+        console.log("MusicProvider:  :"+lastMusic);
 
         if (lastMusic) {
             try {
@@ -40,6 +39,23 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
             }
         }
     }, []);
+   
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+          if (currentMusic) {
+            sessionStorage.setItem('@MUSIC', JSON.stringify(currentMusic));
+            if (playing) {
+                Pause()
+            }
+          }
+        };
+    
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+      }, [currentMusic]);
 
     function Pause() {
         setPlaying(false);
@@ -51,6 +67,7 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     function ClosePlayer() {
         setMusics([]);
         setCurrentMusic(null);
+        sessionStorage.removeItem("@MUSIC");
     }
 
     const updateMusics = (musicResponse: IMusic | IMusic[]) => {

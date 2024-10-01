@@ -8,11 +8,10 @@ export const Music = styled.video`
 `;
 
 export const ContainerBar = styled.div`
-    z-index: 1;
     position: absolute;
     bottom: 0px;
-    right: calc(50% - 350px) ;
-    width: 700px;
+    right: calc(50% - 250px) ;
+    width: 800px;
     height: 50px;
     color: white;
     display: flex;
