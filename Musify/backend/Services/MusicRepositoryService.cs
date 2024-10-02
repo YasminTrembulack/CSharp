@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace  Musify.Services;
 
+using Microsoft.AspNetCore.Http;
 using Models;
 using Repositories;
 
@@ -9,6 +10,7 @@ public class MusicInfoRepositoryService(MusifyContext ctx) : IMusicRepository
 {
     public async Task<Music> Add(Music music)
     {
+        
         await ctx.AddAsync(music);
         await ctx.SaveChangesAsync();
         return music;
@@ -26,6 +28,7 @@ public class MusicInfoRepositoryService(MusifyContext ctx) : IMusicRepository
     public int GetNumberMusics()
         => ctx.Musics.Count();
 
+  
 
     public async Task Update(Music music)
     {

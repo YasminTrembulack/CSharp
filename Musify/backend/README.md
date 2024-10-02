@@ -20,3 +20,5 @@ dotnet add package Microsoft.AspNetCore.Authentication
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 dotnet add package TagLibSharp
+
+https://stackoverflow.com/questions/42741170/how-to-save-images-to-database-using-asp-net-core

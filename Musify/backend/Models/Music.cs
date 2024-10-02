@@ -12,4 +12,5 @@ public class Music : BaseModel
     public required ICollection<MusicPieces> Pieces { get; set; }
     public Guid? MusicHeaderId { get; set; }
     public MusicPieces? MusicHeader { get; set; } = null;
+    public byte[]? Discography{ get; set; } = null;
 }

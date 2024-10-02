@@ -11,7 +11,7 @@ export const ContainerBar = styled.div`
     z-index: 1;
     position: absolute;
     bottom: 0px;
-    right: calc(50% - 350px) ;
+    right: calc(50% + 300px) ;
     width: 700px;
     height: 50px;
     color: white;

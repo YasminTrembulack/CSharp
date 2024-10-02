@@ -6,15 +6,24 @@ const slideTop = keyframes`
     transform: translateY(0);
   }
   100% {
-    transform: translateY(-100px);
+    transform: translateY(-700px);
   }
 `;
 
+interface SlideTopDivProps {
+  display?: string; 
+}
+
 // Crie um componente estilizado que usa a animação
-export const SlideTopDiv = styled.div`
+export const SlideTopDiv = styled.div<SlideTopDivProps>`
+  display: ${(props) => props.display};
+  justify-content: center;
+  position: absolute;
   animation: ${slideTop} 0.3s ease-out both;
   background-color: #696969;
   width: 700px;
-  height: 300px;
-  z-index: 6;
+  right: calc(50% + 300px) ;
+  height: 700px;
+  z-index: 2;
+  bottom: 700;
 `;

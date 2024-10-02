@@ -35,7 +35,7 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult> CreateMusic(MusicCreatePayload payload)
+    public async Task<ActionResult> CreateMusic(MusicCreatePayload payload, IFormFile Image)
     {
         var user_id = User.FindFirst("Id")?.Value;
         // Console.WriteLine("USER ID ------> "+user_id);
@@ -43,6 +43,14 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
         var user = await repoUser.GetById(Guid.Parse(user_id!));
         if (user == null)
             return BadRequest("User not found");
+
+        byte[]? disc = null;
+        using (var fs1 = Image.OpenReadStream())
+        using (var ms1 = new MemoryStream())
+        {
+            fs1.CopyTo(ms1);
+            disc = ms1.ToArray();
+        }
 
         var music = new Music
         {
@@ -54,6 +62,7 @@ public class MusicInfoController(IMusicRepository repo, IUserRepository repoUser
             Album = payload.Album,
             User = user,
             Pieces = [],
+            Discography = disc
         };
         var new_music = await repo.Add(music);
 
