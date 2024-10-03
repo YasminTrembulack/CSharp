@@ -1,21 +1,23 @@
 import { ContainerBar } from './styles';
 import PlayButton from './Components/PlayButton';
 import MusicProgressLine from '../MusicProgressLine';
-import { useState } from 'react';
+import { useContext } from 'react';
 import MusicInfo from './Components/MusicInfo';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { MusicContext } from '../../Context/MusicContext';
 
 export default function MusicPlayer() {
-  const [info, setInfo] = useState<string>('none');
 
-  function handlerShowInfo(){
-    setInfo(info === 'none' ? 'flex' : 'none')
-  }
+  const { ShowMusicDetails } =  useContext(MusicContext);
+
+
   return (<>
-    <ContainerBar onClick={handlerShowInfo}>
+    <ContainerBar>
       <PlayButton />
       <MusicProgressLine/>
+      <KeyboardArrowUpIcon onClick={ShowMusicDetails}/>
     </ContainerBar>
-    <MusicInfo display={info}/>
+    <MusicInfo/>
   </>
   );
 }

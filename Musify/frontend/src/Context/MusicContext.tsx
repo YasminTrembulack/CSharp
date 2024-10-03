@@ -4,13 +4,15 @@ import IMusic from '../Types/music';
 interface IMusicContext {
     currentMusic: IMusic | null;
     allMusics: IMusic[];
-    playing: boolean
+    playing: boolean;
+    details: string;
     ChangeMusic: (item : IMusic) => void;
     Pause: () => void;
     Play: () => void;
     setMusics: (music: IMusic[]) => void;
     ClosePlayer: () => void;
     updateMusics: (musicResponse: any) => void;
+    ShowMusicDetails: () => void;
 }
 
 export const MusicContext = createContext({} as IMusicContext);
@@ -20,9 +22,10 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
     const [currentMusic, setCurrentMusic] = useState<IMusic | null>(null);
     const [allMusics, setMusics] = useState<IMusic[]>([]);
     const [playing, setPlaying] = useState<boolean>(false);
-    
+    const [details, setDetails] = useState<string>('none');
+
     function ChangeMusic(music: IMusic) {
-        music.musicTime = 0;
+        sessionStorage.setItem("@MUSIC", JSON.stringify(music));
         setCurrentMusic(music);
         setPlaying(true);
     }
@@ -70,6 +73,10 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
         sessionStorage.removeItem("@MUSIC");
     }
 
+    function ShowMusicDetails(){
+        setDetails(details === 'none' ? 'flex' : 'none')
+    }
+
     const updateMusics = (musicResponse: IMusic | IMusic[]) => {
         setMusics((prev) => {
             const newMusicArray = Array.isArray(musicResponse) 
@@ -90,13 +97,15 @@ export const MusicProvider = ({ children } : { children: ReactNode }) => {
             value={{
                 currentMusic,
                 allMusics,
+                details,
                 setMusics,
                 playing,
                 ChangeMusic,
                 Pause,
                 Play,
                 ClosePlayer,
-                updateMusics
+                updateMusics,
+                ShowMusicDetails
             }}
         >
             {children}

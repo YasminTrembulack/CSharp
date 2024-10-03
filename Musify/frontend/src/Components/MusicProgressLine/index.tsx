@@ -16,69 +16,59 @@ export default function MusicProgressLine() {
   const [isSeeking, setIsSeeking] = useState(false);
 
     useEffect(() => {
-        let hls: Hls | null = null;
-    
-        if (videoRef.current && currentMusic?.musicHeaderId !== null) {
-        const url = `http://localhost:5036/audio/${currentMusic?.musicHeaderId}`;
+      let hls: Hls | null = null;
+  
+      if (videoRef.current && currentMusic?.musicHeaderId !== null) {
+      const url = `http://localhost:5036/audio/${currentMusic?.musicHeaderId}`;
 
-        if (Hls.isSupported()) {
-            hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(videoRef.current);
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(videoRef.current);
 
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            
-            if (currentMusic) {
-                console.log(" if (Hls.isSupported()) {"+ JSON.stringify(currentMusic));
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          if (playing) {
+              videoRef.current?.play();
+          }
+        });
+      } 
+      else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl') && currentMusic) {
+        videoRef.current.src = url;
+        videoRef.current.addEventListener('loadedmetadata', () => {
+          console.log("videoRef.current.addEventListener('loadedmetadata', () => {"+ JSON.stringify(currentMusic)); 
+          if (playing) {
+            videoRef.current?.play();
+          }
+        });
+      }
 
-                videoRef.current!.currentTime = currentMusic.musicTime; 
-            }
-            if (playing) {
-                videoRef.current?.play();
-            }
-            });
-        } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl') && currentMusic) {
-            videoRef.current.src = url;
-            videoRef.current.addEventListener('loadedmetadata', () => {
-                console.log("videoRef.current.addEventListener('loadedmetadata', () => {"+ JSON.stringify(currentMusic));
-                
-                videoRef.current!.currentTime = currentMusic?.musicTime;
-                if (playing) {
-                    videoRef.current?.play();
-                }
-            });
-        }
+      const handleTimeUpdate = () => {
+          if (!isSeeking) {
+              setCurrentTime(videoRef.current?.currentTime || 0);
+          }
+      };
 
-        const handleTimeUpdate = () => {
-            if (!isSeeking) {
-                setCurrentTime(videoRef.current?.currentTime || 0);
-                if (currentMusic) {
-                    currentMusic.musicTime = videoRef.current?.currentTime || 0;
-                }
-            }
-        };
+      const handleProgress = () => {
+          const buffered = videoRef.current?.buffered;
+          const currentBuffer = buffered && buffered.length > 0 ? buffered.end(buffered.length - 1) : 0;
+          setBufferedTime(currentBuffer);
+      };
 
-        const handleProgress = () => {
-            const buffered = videoRef.current?.buffered;
-            const currentBuffer = buffered && buffered.length > 0 ? buffered.end(buffered.length - 1) : 0;
-            setBufferedTime(currentBuffer);
-        };
+      const handleLoadedMetadata = () => {
+          setDuration(videoRef.current?.duration || 0);
+      };
 
-        const handleLoadedMetadata = () => {
-            setDuration(videoRef.current?.duration || 0);
-        };
+      videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
+      videoRef.current.addEventListener('progress', handleProgress);
+      videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
 
-        videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
-        videoRef.current.addEventListener('progress', handleProgress);
-        videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-        return () => {
-            if (hls) hls.destroy();
-            videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
-            videoRef.current?.removeEventListener('progress', handleProgress);
-            videoRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        };
-        }
+      return () => {
+          if (hls) hls.destroy();
+          videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+          videoRef.current?.removeEventListener('progress', handleProgress);
+          videoRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      };
+      }
     }, [currentMusic]);
 
   // Effect to control play/pause based on 'playing' state
@@ -109,10 +99,10 @@ export default function MusicProgressLine() {
   };
 
     return (
-        <Box sx={{ width: '400px', position: 'relative' }}>
-            <Music ref={videoRef} controls />
-            <SliderBuffer bufferedTime={bufferedTime} duration={duration} />
-            <SliderProgress handleSliderCommitted={handleSliderCommitted} currentTime={currentTime} duration={duration} handleSliderChange={handleSliderChange} />
-        </Box>
+      <Box sx={{ width: '400px', position: 'relative' }}>
+        <Music ref={videoRef} controls />
+        <SliderBuffer bufferedTime={bufferedTime} duration={duration} />
+        <SliderProgress handleSliderCommitted={handleSliderCommitted} currentTime={currentTime} duration={duration} handleSliderChange={handleSliderChange} />
+      </Box>
     );
 }
