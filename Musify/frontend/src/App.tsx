@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import UploadMusic from '../src/Pages/UploadMusic';
+// import UploadMusic from '../src/Pages/UploadMusic';
 import MusicPlayer from "./Components/MusicPlayer";
 import UploadMusic2 from "./Pages/UploadMusic2";
 import './App.css';
@@ -9,11 +9,11 @@ import { ToastContainer } from 'react-toastify';
 import '../src/Styles/toaststyles.css';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { MusicProvider } from "./Context/MusicContext"; // Removi o useContext daqui
+import { MusicContext, MusicProvider } from "./Context/MusicContext"; // Removi o useContext daqui
 import { UserProvider } from "./Context/UserContext";
 import NavBar from "./Components/NavBar";
 import { useContext } from "react";
-import { MusicContext } from "./Context/MusicContext"; // Mover o useContext para dentro
+import UploadVideo from "./Pages/UploadVideo";
 
 function App() {
   const location = useLocation(); 
@@ -26,7 +26,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/upload' element={<UploadMusic />} />
+          <Route path='/upload' element={<UploadVideo />} />
           <Route path='/music/:id' element={<MusicPlayer />} />
           <Route path='/up' element={<UploadMusic2 />} />
         </Routes>
