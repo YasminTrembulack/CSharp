@@ -6,7 +6,7 @@ export default function UploadVideo(){
 
   const [title, setTitle] = useState<string>('');
   const [lyrics, setLyrics] = useState<string>('');
-  const [contentId] = useState<string>('ac12b720-9dc6-11ef-abcf-cecd02c24f20');
+  const [contentId] = useState<string>('e7b0d3c8-7f7c-4c73-b4b4-9c8c2c5d9b1a');
   const [fileInput, setFile] = useState<File | null>();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -22,12 +22,8 @@ export default function UploadVideo(){
     
     try {
       
-      // const musicResponse = await axios.post('http://localhost:5217/video', payload);
-      // const videoId = musicResponse.data.video.id; 
-      const videoId = 'b44f6fa4-2b85-49f6-96c5-e0d5b0f79d3c'; 
-
-      // console.log('Video criada:', musicResponse.data);
-      // console.log(musicResponse.data.video.id);
+      const musicResponse = await axios.post('http://localhost:5217/video', payload);
+      const videoId = musicResponse.data.video.id; 
 
       const formData = new FormData();
       formData.append('payloadFiles', fileInput); 
