@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { api } from '../../Service/api';
 import '../../styles/style.css'
 import axios from 'axios';
 
@@ -7,13 +6,14 @@ export default function UploadVideo(){
 
   const [title, setTitle] = useState<string>('');
   const [lyrics, setLyrics] = useState<string>('');
-  const [contentId, setContentId] = useState<string>('ac12b720-9dc6-11ef-abcf-cecd02c24f20');
+  const [contentId] = useState<string>('ac12b720-9dc6-11ef-abcf-cecd02c24f20');
   const [fileInput, setFile] = useState<File | null>();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     
     if (!fileInput) return;
+    
     const payload = {
       Name: title,
       Description: lyrics,
@@ -22,22 +22,22 @@ export default function UploadVideo(){
     
     try {
       
-      const musicResponse = await axios.post('http://localhost:5217/video', payload);
-      const musicId = musicResponse.data.video.id; // Captura o ID da música
+      // const musicResponse = await axios.post('http://localhost:5217/video', payload);
+      // const videoId = musicResponse.data.video.id; 
+      const videoId = 'b44f6fa4-2b85-49f6-96c5-e0d5b0f79d3c'; 
 
-      console.log('Video criada:', musicResponse.data);
-      console.log(musicResponse.data.video.id);
-      
+      // console.log('Video criada:', musicResponse.data);
+      // console.log(musicResponse.data.video.id);
 
-      // Segunda requisição para enviar o arquivo
       const formData = new FormData();
-      formData.append('payloadFiles', fileInput); // Nome da chave deve ser o mesmo esperado no backend
+      formData.append('payloadFiles', fileInput); 
 
-      // Envia o arquivo
-      const uploadResponse = await axios.post(`http://localhost:5217/upload/${musicId}`, formData, {
+
+      const uploadResponse = await axios.post(`http://localhost:5217/upload/${videoId}`, formData, {
           headers: {
-              'Content-Type': 'multipart/form-data', // Importante para uploads
+              'Content-Type': 'multipart/form-data', 
           },
+          timeout: 30000,
       });
 
       console.log('Arquivo enviado:', uploadResponse.data);

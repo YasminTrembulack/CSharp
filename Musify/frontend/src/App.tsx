@@ -14,6 +14,7 @@ import { UserProvider } from "./Context/UserContext";
 import NavBar from "./Components/NavBar";
 import { useContext } from "react";
 import UploadVideo from "./Pages/UploadVideo";
+import VideoPlayer from "./Pages/VideoPlayer";
 
 function App() {
   const location = useLocation(); 
@@ -28,6 +29,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/upload' element={<UploadVideo />} />
           <Route path='/music/:id' element={<MusicPlayer />} />
+          <Route path='/video/:id' element={<VideoPlayer />} />
           <Route path='/up' element={<UploadMusic2 />} />
         </Routes>
         <MusicPlayerWrapper /> {/* MusicPlayer agora renderizado corretamente */}
